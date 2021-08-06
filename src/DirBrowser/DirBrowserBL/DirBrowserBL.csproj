@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+
+  
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Transplator" Version="0.2.0" ReferenceOutputAssembly="false" OutputItemType="Analyzer">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <CompilerVisibleProperty Include="DebugTransplator" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="SourceItemType" />
+    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="Name" />
+    <AdditionalFiles Include="RenderStartFolders.txt" SourceItemType="Transplate" KeepMetadata="Name" />
+  </ItemGroup>
+</Project>

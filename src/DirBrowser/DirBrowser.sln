@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirBrowser", "DirBrowser\DirBrowser.csproj", "{C8CDE375-9BF7-47BD-88D6-8ADD13400A37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirBrowserBL", "DirBrowserBL\DirBrowserBL.csproj", "{3A85FF61-B276-40A7-8D9A-84AAD306B57C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8CDE375-9BF7-47BD-88D6-8ADD13400A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8CDE375-9BF7-47BD-88D6-8ADD13400A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8CDE375-9BF7-47BD-88D6-8ADD13400A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8CDE375-9BF7-47BD-88D6-8ADD13400A37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A85FF61-B276-40A7-8D9A-84AAD306B57C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A85FF61-B276-40A7-8D9A-84AAD306B57C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A85FF61-B276-40A7-8D9A-84AAD306B57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A85FF61-B276-40A7-8D9A-84AAD306B57C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C45C95A-F0E9-4275-AC67-094B04085F57}
+	EndGlobalSection
+EndGlobal

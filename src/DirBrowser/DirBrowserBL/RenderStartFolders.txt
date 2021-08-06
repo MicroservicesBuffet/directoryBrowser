@@ -1,0 +1,29 @@
+{%
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using DirBrowserBL;
+
+static partial class FirstRendering
+{
+    public static string Render(params FolderToRead[] folders)
+    {
+        var sb = new StringBuilder();
+        int i= 0;
+-%}
+Number folders: {% folders?.Length %}
+    {%~ foreach (var fld in folders) { 
+    i++;
+    ~%}
+         <a href='/{% fld.Id %}' target'_blank'>
+                {% fld.FullPath %}
+            </a>
+    {%~ } ~%}
+{%
+        return sb.ToString();
+
+        void WriteText(string value) => sb.Append(value);
+        void WriteValue(object value) => sb.Append(value);
+    }
+}
+~%}
