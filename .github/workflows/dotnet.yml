@@ -2,7 +2,7 @@ name: .NET
 
 env:
   AZURE_WEBAPP_NAME: BuffetEmail    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: 'src/EmailMS/SenderEmail'      # set this to the path to your web app project, defaults to the repository root
+  AZURE_WEBAPP_PACKAGE_PATH: 'src/DirBrowser/DirBrowser'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '5.0.x'           # set this to the dot net version to use
 
 on:
@@ -26,19 +26,19 @@ jobs:
     - name: prepare tools
       run: |
         cd src
-        cd EmailMS
+        cd DirBrowser
         dotnet tool restore
 
     - name: dotnet restore
       run: |
         cd src
-        cd EmailMS
+        cd DirBrowser
         dotnet restore
         
     - name: dotnet build
       run: |
         cd src
-        cd EmailMS
+        cd DirBrowser
         dotnet build --configuration Release
 
     - name: test
@@ -46,48 +46,39 @@ jobs:
         PWDGMAIL: ${{ secrets.PWDGMAIL }}
       run: |
         cd src
-        cd EmailMS
-        start dotnet smtp4dev
-        dotnet test --filter "RealTest=0"      
-        dotnet test 
+        cd DirBrowser
 
     - name: dotnet publish artifacts
       run: |
         cd src
-        cd EmailMS
-        cd SenderEmail
+        cd DirBrowser
+        cd DirBrowser
         dotnet publish -r win-x64 -c Release -o myappArtifact  --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=true
         dir myappArtifact 
-        cd ..
-        copy-item -Path ".\SimpleSMTP\bin\Release\net5.0\" -Destination ".\SenderEmail\myappArtifact\wwwroot\plugins\smtpProviders\SimpleSMTP\" -Recurse -Force
-        copy-item -Path ".\EmailSmtpClientGmail\bin\Release\net5.0\" -Destination ".\SenderEmail\myappArtifact\wwwroot\plugins\smtpProviders\EmailSmtpClientGmail\" -Recurse -Force
 
   
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v2
       with:
-        name: Email_Win64
-        path: .\src\EmailMS\SenderEmail\myappArtifact
+        name: DirBrowser_Win64
+        path: .\src\DirBrowser\DirBrowser\myappArtifact
     #- name: Test
     #  run: dotnet test --no-build --verbosity normal
 
     - name: 'Delete Artifact'
       run: |
         cd src
-        cd EmailMS
-        cd SenderEmail
+        cd DirBrowser
+        cd DirBrowser
         Remove-Item -Recurse -Force myappArtifact 
 
     - name: dotnet publish for azure
       run: |
         cd src
-        cd EmailMS
-        cd SenderEmail
+        cd DirBrowser
+        cd DirBrowser
         dotnet publish -c Release -o myapp 
         dir myapp 
-        cd ..
-        copy-item -Path ".\SimpleSMTP\bin\Release\net5.0\" -Destination ".\SenderEmail\myapp\wwwroot\plugins\smtpProviders\SimpleSMTP\" -Recurse -Force
-        copy-item -Path ".\EmailSmtpClientGmail\bin\Release\net5.0\" -Destination ".\SenderEmail\myapp\wwwroot\plugins\smtpProviders\EmailSmtpClientGmail\" -Recurse -Force
   # Deploy to Azure Web apps
     - name: 'Run Azure webapp deploy action using publish profile credentials'
       uses: azure/webapps-deploy@v2
