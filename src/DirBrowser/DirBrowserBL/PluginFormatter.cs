@@ -125,8 +125,11 @@ namespace DirBrowserBL
 
             foreach (var subdir in contents.Where(info => info.IsDirectory))
             {
-                string pathFileRel = subdir.PhysicalPath.Substring(root.Length);
+                string pathFileRel = subdir.PhysicalPath.Substring(root.Length+1);
                 pathFileRel = pathFileRel.Replace(@"\", "/");
+                if (!pathFileRel.StartsWith("/"))
+                    pathFileRel = "/" + pathFileRel;
+
                 pathFileRel = $"/{name}{pathFileRel}";
 
                 builder.AppendFormat(@"
