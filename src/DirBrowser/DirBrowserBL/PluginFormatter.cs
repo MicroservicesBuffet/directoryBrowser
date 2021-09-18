@@ -14,15 +14,18 @@ namespace DirBrowserBL
     /// <summary>
     ///
     /// </summary>
-    public class PluginFormatter : IDirectoryFormatter
+    public class PluginFormatterRoot : IDirectoryFormatter
     {
         private const string TextHtmlUtf8 = "text/html; charset=utf-8";
-
+        private readonly string root;
+        private readonly string name;
         private HtmlEncoder _htmlEncoder;
 
-        public PluginFormatter()
+        public PluginFormatterRoot(string root,string name)
         {
             _htmlEncoder = HtmlEncoder.Default;
+            this.root = root;
+            this.name = name;
         }
 
         /// <summary>
@@ -134,12 +137,16 @@ namespace DirBrowserBL
 
             foreach (var file in contents.Where(info => !info.IsDirectory))
             {
+                string pathFileRel = file.PhysicalPath.Substring(root.Length);
+                pathFileRel = pathFileRel.Replace(@"\", "/");
+                pathFileRel = $"/{name}{pathFileRel}";
                 builder.AppendFormat(@"
       <tr class=""file"">
-        <td class=""name""><a href=""./{0}"">{0}</a></td>
-        <td class=""length"">{1}</td>
-        <td class=""modified"">{2}</td>
+        <td class=""name""><a href=""{0}"">{1}</a></td>
+        <td class=""length"">{2}</td>
+        <td class=""modified"">{3}</td>
       </tr>",
+                    HtmlEncode(pathFileRel),
                     HtmlEncode(file.Name),
                     HtmlEncode(file.Length.ToString("n0", CultureInfo.CurrentCulture)),
                     HtmlEncode(file.LastModified.ToString(CultureInfo.CurrentCulture)));
