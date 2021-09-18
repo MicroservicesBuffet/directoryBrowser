@@ -12,13 +12,17 @@ static partial class FirstRendering
         int i= 0;
 -%}
 Number folders: {% folders?.Length %}
+<ul>
+
     {%~ foreach (var fld in folders) { 
     i++;
     ~%}
-         <a href='/{% fld.Id %}' target'_blank'>
-                {% fld.FullPath %}
+<li>         <a href='/{% fld.Id %}' target'_blank'>
+                {% fld.Id  %}
             </a>
+</li>
     {%~ } ~%}
+<ul>
 {%
         return sb.ToString();
 

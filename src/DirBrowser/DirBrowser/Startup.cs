@@ -58,14 +58,14 @@ namespace DirBrowser
             {
                 app.UseStaticFiles(new StaticFileOptions
                 {
-                    FileProvider = new PhysicalFileProvider(item.FullPath),
+                    FileProvider = new PhysicalFileProvider(item.TransformFullPath),
                     RequestPath = "/" + item.Id,
                     ContentTypeProvider = provider
                 });
 
                 app.UseDirectoryBrowser(new DirectoryBrowserOptions()
                 {
-                    FileProvider = new PhysicalFileProvider(item.FullPath),
+                    FileProvider = new PhysicalFileProvider(item.TransformFullPath),
                     RequestPath = new PathString("/" + item.Id)
                 });
             }
