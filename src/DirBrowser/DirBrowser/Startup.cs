@@ -30,7 +30,7 @@ namespace DirBrowser
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDirectoryBrowser();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -66,8 +66,9 @@ namespace DirBrowser
                 app.UseDirectoryBrowser(new DirectoryBrowserOptions()
                 {
                     FileProvider = new PhysicalFileProvider(item.TransformFullPath),
-                    RequestPath = new PathString("/" + item.Id)
-                });
+                    RequestPath = new PathString("/" + item.Id),
+                    Formatter = new PluginFormatter()
+                }); 
             }
             app.UseRouting();
 
