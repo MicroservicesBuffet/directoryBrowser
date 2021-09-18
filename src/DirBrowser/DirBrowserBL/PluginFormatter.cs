@@ -125,12 +125,17 @@ namespace DirBrowserBL
 
             foreach (var subdir in contents.Where(info => info.IsDirectory))
             {
+                string pathFileRel = subdir.PhysicalPath.Substring(root.Length);
+                pathFileRel = pathFileRel.Replace(@"\", "/");
+                pathFileRel = $"/{name}{pathFileRel}";
+
                 builder.AppendFormat(@"
       <tr class=""directory"">
-        <td class=""name""><a href=""./{0}/"">{0}/</a></td>
+        <td class=""name""><a href=""{0}/"">{1}/</a></td>
         <td></td>
-        <td class=""modified"">{1}</td>
+        <td class=""modified"">{2}</td>
       </tr>",
+                    HtmlEncode(pathFileRel),
                     HtmlEncode(subdir.Name),
                     HtmlEncode(subdir.LastModified.ToString(CultureInfo.CurrentCulture)));
             }
