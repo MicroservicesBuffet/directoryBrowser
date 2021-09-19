@@ -12,7 +12,4 @@
 
 
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DirBrowserBL\DirBrowserBL.csproj" />
-  </ItemGroup>
 </Project>
