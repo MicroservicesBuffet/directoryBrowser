@@ -19,7 +19,6 @@ namespace DirBrowser
 {
     public class Startup
     {
-        static FolderToRead[] data;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,13 +29,13 @@ namespace DirBrowser
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDirectoryBrowser();
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DirBrowser", Version = "v1" });
             });
-            services.AddSingleton<FolderToRead[]>(s => data);
+            services.RegisterFolders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,27 +50,10 @@ namespace DirBrowser
 
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
-            app.UseStaticFiles(); 
-            var provider = new MyFileContentProviderOctet();
-            data = Configuration.GetSection("FoldersToRead").Get<FolderToRead[]>();
-            foreach (var item in data)
-            {
-                app.UseStaticFiles(new StaticFileOptions
-                {
-                    FileProvider = new PhysicalSearchFileProvider(item.TransformFullPath,10),
-                    RequestPath = "/" + item.Id,
-                    ContentTypeProvider = provider
-                });
-
-                app.UseDirectoryBrowser(new DirectoryBrowserOptions()
-                {
-                    FileProvider = new PhysicalSearchFileProvider(item.TransformFullPath,10),
-                    RequestPath = new PathString("/" + item.Id),
-                    Formatter = new PluginFormatterRoot(item.TransformFullPath,item.Id)
-                }); 
-            }
+            app.UseStaticFiles();
+            app.UseDirs(Configuration);
             app.UseRouting();
-
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
