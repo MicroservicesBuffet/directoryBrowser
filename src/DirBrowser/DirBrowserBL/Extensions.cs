@@ -32,12 +32,18 @@ namespace DirBrowserBL
                     RequestPath = "/" + item.Id,
                     ContentTypeProvider = provider
                 });
-
                 app.UseDirectoryBrowser(new DirectoryBrowserOptions()
                 {
                     FileProvider = new PhysicalSearchFileProvider(item.TransformFullPath, 10),
                     RequestPath = new PathString("/" + item.Id),
                     Formatter = new PluginFormatterRoot(item.TransformFullPath, item.Id)
+                });
+
+                app.UseDirectoryBrowser(new DirectoryBrowserOptions()
+                {
+                    FileProvider = new PhysicalSearchFileProvider(item.TransformFullPath, 10),
+                    RequestPath = new PathString("/json" + item.Id),
+                    Formatter = new JsonFormatter(item.TransformFullPath, item.Id)
                 });
             }
             app.Map("/dirs", appB =>

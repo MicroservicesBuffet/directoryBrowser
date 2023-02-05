@@ -5,12 +5,58 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace DirBrowserBL
 {
+    public class JsonFormatter : IDirectoryFormatter
+    {
+        private const string TextHtmlUtf8 = "text/html; charset=utf-8";
+        private readonly string root;
+        private readonly string name;
+        private HtmlEncoder _htmlEncoder;
+
+        public JsonFormatter(string root, string name)
+        {
+            _htmlEncoder = HtmlEncoder.Default;
+            this.root = root;
+            this.name = name;
+        }
+        public virtual Task GenerateContentAsync(HttpContext context, IEnumerable<IFileInfo> contents)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+            if (contents == null)
+            {
+                throw new ArgumentNullException(nameof(contents));
+            }
+            contents = contents.OrderBy(f => f.LastModified);
+            context.Response.ContentType = TextHtmlUtf8;
+
+            if (HttpMethods.IsHead(context.Request.Method))
+            {
+                // HEAD, no response body
+                return Task.CompletedTask;
+            }
+
+            var result = contents.Select(x => new
+            {
+                Name = x.Name,
+                PhysicalPath = $"{context.Request.Path}{x.Name}",
+                x.IsDirectory,
+                x.LastModified
+            });
+
+            var jsonString = System.Text.Json.JsonSerializer.Serialize(result);
+            context.Response.ContentType = new MediaTypeHeaderValue("application/json").ToString();
+            return context.Response.WriteAsync(jsonString, Encoding.UTF8);
+        }
+    }
     /// <summary>
     ///
     /// </summary>
@@ -41,7 +87,7 @@ namespace DirBrowserBL
             {
                 throw new ArgumentNullException(nameof(contents));
             }
-
+            contents = contents.OrderBy(f => f.LastModified);
             context.Response.ContentType = TextHtmlUtf8;
 
             if (HttpMethods.IsHead(context.Request.Method))
@@ -114,7 +160,7 @@ namespace DirBrowserBL
   @"</h1></header>
     <table id=""index"" summary=""{0}"">
     <thead>
-      <tr><th abbr=""{1}"">{1}</th><th abbr=""{2}"">{2}</th><th abbr=""{3}"">{4}</th></tr>
+      <tr><th abbr=""{1}"">{1}</th><th abbr=""{2}"">{2}</th><th abbr=""{3}"">{4}</th><th>test</th></tr>
     </thead>
     <tbody>",
             HtmlEncode("Summary"),
@@ -135,7 +181,7 @@ namespace DirBrowserBL
                 builder.AppendFormat(@"
       <tr class=""directory"">
         <td class=""name""><a href=""{0}/"">{1}/</a></td>
-        <td></td>
+        <td><a href=""javascript:window.alert('not implemented')"">Size!</a></td>
         <td class=""modified"">{2}</td>
       </tr>",
                     HtmlEncode(pathFileRel),
