@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31515.178
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DirBrowser", "DirBrowser\DirBrowser.csproj", "{C8CDE375-9BF7-47BD-88D6-8ADD13400A37}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DirBrowserBL", "DirBrowserBL\DirBrowserBL.csproj", "{3A85FF61-B276-40A7-8D9A-84AAD306B57C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirBrowserBackground", "DirBrowserBackground\DirBrowserBackground.csproj", "{76D075C9-FD25-4FC5-ACA7-7C0C268EA27B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirBrowser7", "DirBrowser7\DirBrowser7.csproj", "{C293EACD-0C03-438D-B537-EB0AACDA41DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C8CDE375-9BF7-47BD-88D6-8ADD13400A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8CDE375-9BF7-47BD-88D6-8ADD13400A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8CDE375-9BF7-47BD-88D6-8ADD13400A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8CDE375-9BF7-47BD-88D6-8ADD13400A37}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3A85FF61-B276-40A7-8D9A-84AAD306B57C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A85FF61-B276-40A7-8D9A-84AAD306B57C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A85FF61-B276-40A7-8D9A-84AAD306B57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A85FF61-B276-40A7-8D9A-84AAD306B57C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76D075C9-FD25-4FC5-ACA7-7C0C268EA27B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76D075C9-FD25-4FC5-ACA7-7C0C268EA27B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76D075C9-FD25-4FC5-ACA7-7C0C268EA27B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76D075C9-FD25-4FC5-ACA7-7C0C268EA27B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C293EACD-0C03-438D-B537-EB0AACDA41DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C293EACD-0C03-438D-B537-EB0AACDA41DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C293EACD-0C03-438D-B537-EB0AACDA41DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C293EACD-0C03-438D-B537-EB0AACDA41DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

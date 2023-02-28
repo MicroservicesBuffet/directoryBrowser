@@ -24,6 +24,10 @@ namespace DirBrowserBL
         {
             var provider = new MyFileContentProviderOctet();
             data = config.GetSection("FoldersToRead").Get<FolderToRead[]>();
+            if((data?.Length??0) == 0)
+            {
+                throw new ArgumentException("no folders configured");
+            }
             foreach (var item in data)
             {
                 app.UseStaticFiles(new StaticFileOptions

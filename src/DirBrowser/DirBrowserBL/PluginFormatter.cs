@@ -160,7 +160,7 @@ namespace DirBrowserBL
   @"</h1></header>
     <table id=""index"" summary=""{0}"">
     <thead>
-      <tr><th abbr=""{1}"">{1}</th><th abbr=""{2}"">{2}</th><th abbr=""{3}"">{4}</th><th>test</th></tr>
+      <tr><th abbr=""{1}"">{1}</th><th abbr=""{2}"">{2}</th><th abbr=""{3}"">{4}</th></tr>
     </thead>
     <tbody>",
             HtmlEncode("Summary"),
@@ -181,7 +181,7 @@ namespace DirBrowserBL
                 builder.AppendFormat(@"
       <tr class=""directory"">
         <td class=""name""><a href=""{0}/"">{1}/</a></td>
-        <td><a href=""javascript:window.alert('not implemented')"">Size!</a></td>
+        <td><!--<a href=""javascript:window.alert('not implemented')"">Size!</a>--></td>
         <td class=""modified"">{2}</td>
       </tr>",
                     HtmlEncode(pathFileRel),
