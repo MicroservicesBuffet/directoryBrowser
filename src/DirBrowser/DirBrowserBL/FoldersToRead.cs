@@ -1,7 +1,23 @@
-﻿namespace DirBrowserBL;
+﻿using System.IO;
 
-public class FolderToRead
+namespace DirBrowserBL;
+
+public class FolderToRead : IFileInfo
 {
+    public FolderToRead()
+    {
+        
+    }
+    public FolderToRead(DirectoryInfo di)
+    {
+        this.Id= di.Name;
+        this.FullPath = di.FullName;
+    }
+    public FolderToRead(FileInfo fi)
+    {
+        this.Id = fi.Name;
+        this.FullPath = fi.FullName;
+    }
     public string Id { get; set; }
     public string FullPath { get; set; }
 
@@ -9,11 +25,53 @@ public class FolderToRead
     {
         get
         {
-            if(FullPath == "./")
+            if (FullPath == "./")
             {
                 return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             }
             return FullPath;
         }
+    }
+
+
+    public bool Exists => true;
+
+    public long Length
+    {
+        get
+        {
+            if (IsDirectory)
+                return -1;
+
+            return new FileInfo(FullPath).Length;
+        }
+    }
+
+    public string PhysicalPath => FullPath;
+
+    public string Name => Id;
+
+    public DateTimeOffset LastModified 
+    {
+        get 
+        {
+            if (IsDirectory)
+            {
+                return Directory.GetLastWriteTime(FullPath);
+            }
+            else
+            {
+                return File.GetLastWriteTime(FullPath);
+            }
+        }
+    }
+
+    public bool IsDirectory => Directory.Exists(FullPath);
+
+    public Stream CreateReadStream()
+    {
+        if (IsDirectory)
+            return null;
+        return File.OpenRead(FullPath);
     }
 }

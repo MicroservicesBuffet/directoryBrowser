@@ -28,37 +28,50 @@ namespace DirBrowserBL
             {
                 throw new ArgumentException("no folders configured");
             }
+            
             foreach (var item in data)
             {
                 app.UseStaticFiles(new StaticFileOptions
                 {
-                    FileProvider = new PhysicalSearchFileProvider(item.TransformFullPath, 10),
+                    FileProvider = new PhysicalSearchFileProvider(item.TransformFullPath),
                     RequestPath = "/" + item.Id,
                     ContentTypeProvider = provider
                 });
+
                 app.UseDirectoryBrowser(new DirectoryBrowserOptions()
                 {
-                    FileProvider = new PhysicalSearchFileProvider(item.TransformFullPath, 10),
+                    FileProvider = new PhysicalSearchFileProvider(item.TransformFullPath),
                     RequestPath = new PathString("/" + item.Id),
                     Formatter = new PluginFormatterRoot(item.TransformFullPath, item.Id)
                 });
 
                 app.UseDirectoryBrowser(new DirectoryBrowserOptions()
                 {
-                    FileProvider = new PhysicalSearchFileProvider(item.TransformFullPath, 10),
+                    FileProvider = new PhysicalSearchFileProvider(item.TransformFullPath),
                     RequestPath = new PathString("/json/" + item.Id),
                     Formatter = new JsonFormatter(item.TransformFullPath, item.Id)
                 });
-            } 
+            }
             app.Map("/dirs", appB =>
-             {
-                 var flds= appB.ApplicationServices.GetRequiredService<FolderToRead[]>();
-                 appB.Run(async cnt =>
-                 {
-                     cnt.Response.ContentType = "text/html";
-                     await cnt.Response.WriteAsync(new RenderingTemplates().RenderStartFolders(flds));
-                 });
-             });
+            {
+                var flds = appB.ApplicationServices.GetRequiredService<FolderToRead[]>();
+                appB.Run(async cnt =>
+                {
+                    cnt.Response.ContentType = "text/html";
+                    await cnt.Response.WriteAsync(new RenderingTemplates().RenderStartFolders(flds));
+                });
+            });
+
+            app.Map("/json/dirs", appB =>
+            {
+                var flds = appB.ApplicationServices.GetRequiredService<FolderToRead[]>();
+                appB.Run(async cnt =>
+                {
+                    var jsonString = System.Text.Json.JsonSerializer.Serialize(flds);
+                    cnt.Response.ContentType = new MediaTypeHeaderValue("application/json").ToString();
+                    await cnt.Response.WriteAsync(jsonString, Encoding.UTF8);
+                });
+            });
             return app;
         } 
     }

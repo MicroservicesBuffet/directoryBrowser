@@ -8,7 +8,7 @@ public class PhysicalSearchFileProvider : IFileProvider, IDisposable
     private  PhysicalFileProvider provider;
     private bool disposedValue;
 
-    public PhysicalSearchFileProvider(string root, int depthSearch)
+    public PhysicalSearchFileProvider(string root)
     {
         provider = new PhysicalFileProvider(root);
     }

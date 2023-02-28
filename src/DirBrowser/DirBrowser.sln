@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DirBrowserBL", "DirBrowserBL\DirBrowserBL.csproj", "{3A85FF61-B276-40A7-8D9A-84AAD306B57C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirBrowser7", "DirBrowser7\DirBrowser7.csproj", "{C293EACD-0C03-438D-B537-EB0AACDA41DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DirBrowser7", "DirBrowser7\DirBrowser7.csproj", "{C293EACD-0C03-438D-B537-EB0AACDA41DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

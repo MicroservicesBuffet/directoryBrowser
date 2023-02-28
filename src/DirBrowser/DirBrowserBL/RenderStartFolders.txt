@@ -11,6 +11,11 @@ static partial class FirstRendering
         var sb = new StringBuilder();
         int i= 0;
 -%}
+
+See /json/viewSimple for JSON
+
+<br />
+
 Number folders: {% folders?.Length %}
 <br />
 Simple View Interface:
@@ -20,7 +25,7 @@ Simple View Interface:
     i++;
     ~%}
 <li>         <a href='/{% fld.Id %}' target'_blank'>
-                /json/{% fld.Id  %}
+                {% fld.Id  %}
             </a>
 </li>
     {%~ } ~%}
@@ -32,8 +37,8 @@ JSON : Put a JSON
     {%~ foreach (var fld in folders) { 
     i++;
     ~%}
-<li>         <a href='/json/{% fld.Id %}' target'_blank'>
-                {% fld.Id  %}
+<li>          <a href='/json/{% fld.Id %}' target'_blank'>
+                /json/{% fld.Id  %}
             </a>
 </li>
     {%~ } ~%}
