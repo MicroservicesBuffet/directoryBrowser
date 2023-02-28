@@ -25,12 +25,9 @@ return (
   <Box textAlign="center"  h='40px' bg='white' fontSize="30px">
     Directory browser and editor
   </Box>
-  <Box h='40px' bg='pink.100'>
-    Current Directory :     
-  </Box>
-
+  
   <Box>
-    Here will be the files
+    
     <QueryClientProvider client={queryClient}>
       <DisplayFiles />
     </QueryClientProvider>
