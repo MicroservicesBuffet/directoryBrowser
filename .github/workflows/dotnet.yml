@@ -2,7 +2,7 @@ name: .NET
 
 env:
   AZURE_WEBAPP_NAME: directoryBrowser    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: 'src/DirBrowser7/DirBrowser7'      # set this to the path to your web app project, defaults to the repository root
+  AZURE_WEBAPP_PACKAGE_PATH: 'src/DirBrowser/DirBrowser7'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '7.0.x'           # set this to the dot net version to use
 
 on:

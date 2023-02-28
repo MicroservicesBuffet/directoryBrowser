@@ -20,13 +20,26 @@ Simple View Interface:
     i++;
     ~%}
 <li>         <a href='/{% fld.Id %}' target'_blank'>
+                /json/{% fld.Id  %}
+            </a>
+</li>
+    {%~ } ~%}
+<ul>
+<br />
+JSON : Put a JSON 
+<ul>
+
+    {%~ foreach (var fld in folders) { 
+    i++;
+    ~%}
+<li>         <a href='/json/{% fld.Id %}' target'_blank'>
                 {% fld.Id  %}
             </a>
 </li>
     {%~ } ~%}
 <ul>
 
-JSON : Put a JSON 
+
 {%
         return sb.ToString();
 
