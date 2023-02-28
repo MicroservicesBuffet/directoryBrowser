@@ -10,11 +10,11 @@ namespace DirBrowser7.Controllers;
 public class FileController : ControllerBase
 {
     [HttpGet("{*path}")]
-    public async Task<string[]> GetFileLines(string path, [FromServices] FolderToRead[] folders)
+    public async Task<string> GetFileLines(string path, [FromServices] FolderToRead[] folders)
     {
         await Task.Delay(5000);
         var file = FullPathFile(path, folders);
-        return System.IO.File.ReadAllLines(file);
+        return System.IO.File.ReadAllText(file);
     }
     [HttpGet]
     public async Task<FolderToRead[]> GetRootFolders([FromServices] FolderToRead[] folders)

@@ -9,19 +9,19 @@ type PropsDisplayEditFile = {
 
 export default function EditFile({fileObject,folderParentDisplay }: PropsDisplayEditFile) {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const [dataLines, setData]=useState<string[]>([]);
+    const [dataLines, setData]=useState<string>('');
     const [textToSave, setTextToSave]= useState('');
     const openAndLoad=()=>{
         onOpen();
-        const fetchLines = (): Promise<string[]> =>
+        const fetchLines = (): Promise<string> =>
             fetch('http://localhost:5288/api/v1.0/File/GetFileLines/'+ folderParentDisplay + fileObject.name).then(
-                (res) => res.json() 
+                (res) => res.text() 
             );
 
             fetchLines()
                 .then(it=> {
                     setData(it);
-                    setTextToSave(it.join('\r\n'));
+                    setTextToSave(it);
                 });
                 
 
@@ -29,6 +29,7 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
     const handleMessageChange=(evt:any)=>{
         setTextToSave(evt.target.value);
         console.log(evt.target.value);
+        console.log(dataLines);
     }
 
     return (
@@ -44,9 +45,8 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
               {(dataLines.length===0) && <>Please wait, loading</>}
 
               {(dataLines.length>0) && 
-              <> {(dataLines.join('\r\n') !== textToSave)?"Modified":""}
+              <> 
               <Textarea value={textToSave} onChange={handleMessageChange}  />
-              {textToSave}
               </>
               }
             </ModalBody>
