@@ -10,13 +10,15 @@ namespace DirBrowser7.Controllers;
 public class FileController : ControllerBase
 {
     [HttpGet]
-    public FolderToRead[] GetRootFolders([FromServices] FolderToRead[] folders)
+    public async Task<FolderToRead[]> GetRootFolders([FromServices] FolderToRead[] folders)
     {
+        await Task.Delay(5000);
         return folders;
     }
     [HttpGet("{*path}")]
-    public FolderToRead[] GetFolderContent(string path,[FromServices] FolderToRead[] folders)
+    public async Task<FolderToRead[]> GetFolderContent(string path,[FromServices] FolderToRead[] folders)
     {
+        await Task.Delay(5000);
         //todo: html decode
         if (path.Contains("%2f"))
             path = path.Replace("%2f", "/");
