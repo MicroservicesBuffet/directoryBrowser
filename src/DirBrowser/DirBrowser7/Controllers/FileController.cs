@@ -9,16 +9,22 @@ namespace DirBrowser7.Controllers;
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
 public class FileController : ControllerBase
 {
+    [HttpGet("{*path}")]
+    public async Task<string[]> GetFileLines(string path, [FromServices] FolderToRead[] folders)
+    {
+        await Task.Delay(5000);
+        var file = FullPathFile(path, folders);
+        return System.IO.File.ReadAllLines(file);
+    }
     [HttpGet]
     public async Task<FolderToRead[]> GetRootFolders([FromServices] FolderToRead[] folders)
     {
         await Task.Delay(5000);
         return folders;
     }
-    [HttpGet("{*path}")]
-    public async Task<FileResult> GetFileContent(string path, [FromServices] FolderToRead[] folders)
+
+    static string FullPathFile(string path, [FromServices] FolderToRead[] folders)
     {
-        await Task.Delay(5000);
         var f = GetFirstFolder(path, folders);
         var str = path.Split("/", StringSplitOptions.RemoveEmptyEntries);
         var pathFull = f.TransformFullPath;
@@ -31,6 +37,13 @@ public class FileController : ControllerBase
 
         }
         var file = Path.Combine(pathFull, str[str.Length - 1]);
+        return file;
+    }
+    [HttpGet("{*path}")]
+    public async Task<FileResult> GetFileContent(string path, [FromServices] FolderToRead[] folders)
+    {
+        await Task.Delay(5000);
+        var file = FullPathFile(path, folders);
         return PhysicalFile(file, "application/octet-stream");
     }
     static FolderToRead GetFirstFolder(string path, FolderToRead[] folders)
@@ -55,10 +68,22 @@ public class FileController : ControllerBase
         }
         return f;
     }
-    [HttpGet("{*path}")]
-    public async Task<FolderToRead[]> GetFolderContent(string path, [FromServices] FolderToRead[] folders)
+    [HttpGet]
+    public async Task<bool> IsFolder(string path, FolderToRead[] folders)
     {
         await Task.Delay(5000);
+        try
+        {
+            var di = FolderFromContent(path, folders);
+            return di != null; 
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    static DirectoryInfo FolderFromContent(string path,  FolderToRead[] folders)
+    {
         var f = GetFirstFolder(path, folders);
         var str = path.Split("/", StringSplitOptions.RemoveEmptyEntries);
         var pathFull = f.TransformFullPath;
@@ -71,6 +96,13 @@ public class FileController : ControllerBase
 
         }
         var di = new DirectoryInfo(pathFull);
+        return di;
+    }
+    [HttpGet("{*path}")]
+    public async Task<FolderToRead[]> GetFolderContent(string path, [FromServices] FolderToRead[] folders)
+    {
+        await Task.Delay(5000);
+        var di = FolderFromContent(path, folders);
         var files = di.EnumerateFiles().ToArray().Select(it => new FolderToRead(it)).ToArray();
         var dirs = di.EnumerateDirectories().ToArray().Select(it => new FolderToRead(it)).ToArray();
 

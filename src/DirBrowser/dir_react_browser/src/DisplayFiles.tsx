@@ -24,6 +24,9 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
       arrSplitFolders=root.split('/').filter(it=>it && it.length>0);
 
     var key= 'root '+root;
+    
+    
+
     const fetchFolders = (): Promise<FolderToRead[]> =>
     fetch('http://localhost:5288/api/v1.0/File/GetRootFolders').then(
       (res) => res.json() ,
@@ -69,8 +72,6 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
 </Breadcrumb>
 </Box>
     </>}
-    
-    
     
       <DisplayFoldersAndFiles folderParent={root} allData={data!} ></DisplayFoldersAndFiles>
     </>
