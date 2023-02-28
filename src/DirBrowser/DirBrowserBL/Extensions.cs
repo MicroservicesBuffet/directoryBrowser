@@ -49,7 +49,7 @@ namespace DirBrowserBL
                     RequestPath = new PathString("/json/" + item.Id),
                     Formatter = new JsonFormatter(item.TransformFullPath, item.Id)
                 });
-            }
+            } 
             app.Map("/dirs", appB =>
              {
                  var flds= appB.ApplicationServices.GetRequiredService<FolderToRead[]>();

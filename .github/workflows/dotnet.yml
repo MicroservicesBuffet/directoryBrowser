@@ -66,11 +66,13 @@ jobs:
     #  run: dotnet test --no-build --verbosity normal
 
     - name: 'Delete Artifact'
+      shell: pwsh
       run: |
         cd src
         cd DirBrowser
         cd DirBrowser7
         Remove-Item -Recurse -Force myappArtifact 
+
 
     - name: dotnet publish for azure
       run: |

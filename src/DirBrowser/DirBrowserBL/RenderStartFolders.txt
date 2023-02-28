@@ -11,8 +11,9 @@ static partial class FirstRendering
         var sb = new StringBuilder();
         int i= 0;
 -%}
-JSON : /json/
 Number folders: {% folders?.Length %}
+<br />
+Simple View Interface:
 <ul>
 
     {%~ foreach (var fld in folders) { 
@@ -24,6 +25,8 @@ Number folders: {% folders?.Length %}
 </li>
     {%~ } ~%}
 <ul>
+
+JSON : Put a JSON 
 {%
         return sb.ToString();
 
