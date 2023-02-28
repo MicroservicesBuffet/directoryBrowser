@@ -1,22 +1,19 @@
-﻿using System;
+﻿namespace DirBrowserBL;
 
-namespace DirBrowserBL
+public class FolderToRead
 {
-    public class FolderToRead
-    {
-        public string Id { get; set; }
-        public string FullPath { get; set; }
+    public string Id { get; set; }
+    public string FullPath { get; set; }
 
-        public string TransformFullPath
+    public string TransformFullPath
+    {
+        get
         {
-            get
+            if(FullPath == "./")
             {
-                if(FullPath == "./")
-                {
-                    return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                }
-                return FullPath;
+                return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             }
+            return FullPath;
         }
     }
 }

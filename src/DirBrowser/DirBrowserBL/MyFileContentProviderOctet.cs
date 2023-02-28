@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.StaticFiles;
-using System;
-
-namespace DirBrowserBL
+﻿namespace DirBrowserBL;
+public class MyFileContentProviderOctet : IContentTypeProvider
 {
-    public class MyFileContentProviderOctet : IContentTypeProvider
-    {
 
-        public bool TryGetContentType(string subpath, out string contentType)
-        {
-            contentType = "application/octet-stream";
-            return true;
-        }
+    public bool TryGetContentType(string subpath, out string contentType)
+    {
+        contentType = "application/octet-stream";
+        return true;
     }
 }

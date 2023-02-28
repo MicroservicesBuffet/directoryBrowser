@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DirBrowserBL;
 
-namespace DirBrowserBL
+public class RenderingTemplates
 {
-    public class RenderingTemplates
+    public string RenderStartFolders(FolderToRead[] flds)
     {
-        public string RenderStartFolders(FolderToRead[] flds)
-        {
-            return FirstRendering.Render(flds);
-        }
+        return FirstRendering.Render(flds);
     }
 }
