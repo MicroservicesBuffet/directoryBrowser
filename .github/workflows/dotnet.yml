@@ -14,8 +14,8 @@ on:
 jobs:
   build:
 
-    #runs-on: ubuntu-latest
-    runs-on: windows-2019
+    runs-on: ubuntu-latest
+    #runs-on: windows-2019
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -26,19 +26,19 @@ jobs:
     - name: prepare tools
       run: |
         cd src
-        cd DirBrowser7
+        cd DirBrowser
         dotnet tool restore
 
     - name: dotnet restore
       run: |
         cd src
-        cd DirBrowser7
+        cd DirBrowser
         dotnet restore
         
     - name: dotnet build
       run: |
         cd src
-        cd DirBrowser7
+        cd DirBrowser
         dotnet build --configuration Release
 
     - name: test
@@ -46,12 +46,13 @@ jobs:
         PWDGMAIL: ${{ secrets.PWDGMAIL }}
       run: |
         cd src
-        cd DirBrowser7
+        cd DirBrowser
 
     - name: dotnet publish artifacts
       run: |
         cd src
-        cd DirBrowser7        
+        cd DirBrowser
+        cd DirBrowser7
         dotnet publish -r win-x64 -c Release -o myappArtifact  --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=true
         dir myappArtifact 
 
@@ -60,21 +61,21 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: DirBrowser7_Win64
-        path: .\src\DirBrowser7\DirBrowser7\myappArtifact
+        path: .\src\DirBrowser\DirBrowser7\myappArtifact
     #- name: Test
     #  run: dotnet test --no-build --verbosity normal
 
     - name: 'Delete Artifact'
       run: |
         cd src
-        cd DirBrowser7
+        cd DirBrowser
         cd DirBrowser7
         Remove-Item -Recurse -Force myappArtifact 
 
     - name: dotnet publish for azure
       run: |
         cd src
-        cd DirBrowser7
+        cd DirBrowser
         cd DirBrowser7
         dotnet publish -c Release -o myapp 
         dir myapp 
