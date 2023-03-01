@@ -11,4 +11,7 @@ global using Microsoft.AspNetCore.Http;
 global using System.Globalization;
 global using System.Net.Http.Headers;
 global using System.Text.Encodings.Web;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
 

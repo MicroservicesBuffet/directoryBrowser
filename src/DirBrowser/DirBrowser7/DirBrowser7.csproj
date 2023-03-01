@@ -15,11 +15,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="7.0.3" />
 	  <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.0.0" />
 	  <PackageReference Include="NetCore2Blockly" Version="7.2023.228.2023" />
+	  <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.2" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,9 +1,4 @@
 
-using BrowserHistory;
-using DirBrowserBL;
-using Microsoft.Extensions.Configuration;
-using NetCore2BlocklyNew;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,7 +20,12 @@ builder.Services.AddSingleton<IHistoryFileString, HistoryFileString>();
 //    // By default, all incoming requests will be authorized according to the default policy.
 //    options.FallbackPolicy = options.DefaultPolicy;
 //});
-
+builder.Host.UseNLog();
+builder.Services.AddLogging(it =>
+{
+    it.ClearProviders();
+    it.AddNLog();
+});
 var app = builder.Build();
 
 app.UseCors(it => it
