@@ -60,7 +60,7 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
   const concat = prevVals.reduce((acc, curVal) => {
     return acc +'/'+ curVal;
   }, '/show');
-  return <BreadcrumbItem>
+  return <BreadcrumbItem key={"br"+index} >
     <BreadcrumbLink as={Link} to={concat}>{it}</BreadcrumbLink>
   </BreadcrumbItem>
       }

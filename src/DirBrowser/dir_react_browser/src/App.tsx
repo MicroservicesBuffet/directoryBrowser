@@ -15,6 +15,7 @@ export const App = () => {
 
   const queryClient = new QueryClient();
 
+  
 return (
   <ChakraProvider theme={theme}>
     <VStack
@@ -29,7 +30,7 @@ return (
   <Box>
     
     <QueryClientProvider client={queryClient}>
-      <DisplayFiles />
+      <DisplayFiles  />
     </QueryClientProvider>
   </Box>
 </VStack>

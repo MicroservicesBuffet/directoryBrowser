@@ -56,10 +56,10 @@ export default function DisplayFoldersAndFiles(
           {!it.isDirectory && <>Size {it.length}</>}
           </>
         </Td>
-        <Td>
+        <Td> 
             {it.isDirectory &&
             <Button colorScheme='teal'>
-              <Link to={folderParentDisplay + it.name}>GoTo</Link>
+              <Link to={folderParentDisplay + it.name}>GoTo {it.name}</Link>
               </Button>
             }
             {!it.isDirectory && 
