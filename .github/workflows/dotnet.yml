@@ -19,10 +19,21 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }} 
-
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 18.13.0
+    - name: build react
+      run: |
+        cd src
+        cd DirBrowser
+        cd dir_react_browser
+        npm i
+        npm run build
+        cp -r build/* ../DirBrowser7/wwwroot/    
     - name: prepare tools
       run: |
         cd src
