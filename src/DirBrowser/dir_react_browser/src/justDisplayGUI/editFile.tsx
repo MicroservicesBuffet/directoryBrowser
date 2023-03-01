@@ -14,7 +14,7 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
     const openAndLoad=()=>{
         onOpen();
         const fetchLines = (): Promise<string> =>
-            fetch('http://localhost:5288/api/v1.0/File/GetFileLines/'+ folderParentDisplay + fileObject.name).then(
+            fetch('http://localhost:5288/api/v1.0/File/GetFileText/'+ folderParentDisplay + fileObject.name).then(
                 (res) => res.text() 
             );
 
@@ -26,6 +26,27 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
                 
 
     }
+    const Save = ()=>{
+      const fetchLines = (): Promise<string> =>
+      fetch('http://localhost:5288/api/v1.0/File/SetFileText/',
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({pathFile:folderParentDisplay + fileObject.name, content: textToSave})
+      }
+      ).then(
+          (res) => res.text() 
+      );
+
+      fetchLines()
+          .then(it=> {
+              onClose();
+          });
+    }
+
     const handleMessageChange=(evt:any)=>{
         setTextToSave(evt.target.value);
         console.log(evt.target.value);
@@ -55,7 +76,7 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
               <Button colorScheme='blue' mr={3} onClick={onClose}>
                 Close,do not save
               </Button>
-              <Button variant='ghost'>Save!</Button>
+              <Button variant='ghost' onClick={Save}>Save!</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>

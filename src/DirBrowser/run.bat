@@ -1,0 +1,1 @@
+wt new-tab --title runSite -d "dir_react_browser" PowerShell -noexit -c "npm start" ; new-tab --title runNet -d "DirBrowser7" PowerShell -noexit -c  "dotnet watch run --no-hot-reload"; new-tab --title VSCode -d "dir_react_browser" PowerShell -noexit -c  "code .";new-tab --title SLN -d "." PowerShell -noexit -c  "gci *.sln";

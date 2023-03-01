@@ -28,7 +28,7 @@ export default function DisplayFoldersAndFiles(
       <Tr>
         <Th>Nr</Th>
         <Th>Name</Th>
-        <Th>Type</Th>
+        <Th>Details</Th>        
         <Th >Operations</Th>
       </Tr>
     </Thead>
@@ -36,8 +36,16 @@ export default function DisplayFoldersAndFiles(
        {allData.map((it,index) =>
         <Tr  key={it.id}>
         <Td>{index+1}</Td>
-        <Td><Link to={folderParentDisplay + it.name}>{it.name}</Link> </Td>
-        <Td>{it.isDirectory?"Folder":"File" }</Td>
+        <Td>
+          <Link to={folderParentDisplay + it.name}>{it.name}</Link> 
+        </Td>
+        <Td><>
+          {it.isDirectory?"Folder":"File" }  <br />      
+          {it.fullPath}<br />
+          Modified at {it.lastModified}<br />
+          {!it.isDirectory && <>Size {it.length}</>}
+          </>
+        </Td>
         <Td>
             {it.isDirectory &&
             <Button colorScheme='teal'>

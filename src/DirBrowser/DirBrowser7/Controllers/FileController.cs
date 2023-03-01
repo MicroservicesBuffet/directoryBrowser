@@ -1,20 +1,39 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DirBrowser7.Controllers;
+public class SaveTextFile {
+    public string? pathFile { get; set; }
+    public string? content { get; set; }
+} 
 
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
 public class FileController : ControllerBase
 {
+
+    FolderToRead[] folders1;
+    public FileController(FolderToRead[] folders)
+    {
+
+        this.folders1 = folders;
+
+    }
     [HttpGet("{*path}")]
-    public async Task<string> GetFileLines(string path, [FromServices] FolderToRead[] folders)
+    public async Task<string> GetFileText(string path, [FromServices] FolderToRead[] folders)
     {
         await Task.Delay(5000);
         var file = FullPathFile(path, folders);
-        return System.IO.File.ReadAllText(file);
+        return await System.IO.File.ReadAllTextAsync(file);
+    }
+    [HttpPost]
+    public async Task<int> SetFileText([FromBody] SaveTextFile save)
+    {
+        await Task.Delay(5000);
+        var file = FullPathFile(save.pathFile??"", folders1);
+        await System.IO.File.WriteAllTextAsync(file, save.content ?? "");
+        return (save.content ?? "").Length;
     }
     [HttpGet]
     public async Task<FolderToRead[]> GetRootFolders([FromServices] FolderToRead[] folders)
