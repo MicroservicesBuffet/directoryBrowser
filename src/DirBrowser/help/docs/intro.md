@@ -8,9 +8,11 @@ Let's discover **BrowserDir in less than 5 minutes**.
 
 ## Getting Started
 
-Get started by going to <a href='/show'>Show</a>
+Get started by going to the root of the site <a href="/">ROOT</a>
 
 You will see a list of files and folders
+
+![BrowserDir](/img/BrowserDir_firstPage.png)
 
 ### How to setup
 

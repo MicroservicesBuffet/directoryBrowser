@@ -34,6 +34,17 @@ jobs:
         npm i
         npm run build
         cp -r build/* ../DirBrowser7/wwwroot/    
+
+    - name: build help
+      run: |
+        cd src
+        cd DirBrowser
+        cd help
+        npm i
+        npm run build
+        rm ../DirBrowser7/wwwroot/help/default.html
+        cp -r build/* ../DirBrowser7/wwwroot/help/    
+
     - name: prepare tools
       run: |
         cd src
