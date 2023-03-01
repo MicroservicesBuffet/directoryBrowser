@@ -157,9 +157,11 @@ public class PluginFormatterRoot : IDirectoryFormatter
         HtmlEncode("Size"),
         HtmlEncode("Modified"),
         HtmlEncode("LastModified"));
-
+        
         foreach (var subdir in contents.Where(info => info.IsDirectory))
         {
+            if (subdir == null || subdir.PhysicalPath == null)
+                continue;
             string pathFileRel = subdir.PhysicalPath.Substring(root.Length+1);
             pathFileRel = pathFileRel.Replace(@"\", "/");
             if (!pathFileRel.StartsWith("/"))
@@ -180,6 +182,8 @@ public class PluginFormatterRoot : IDirectoryFormatter
 
         foreach (var file in contents.Where(info => !info.IsDirectory))
         {
+            if (file == null || file.PhysicalPath == null)
+                continue;
             string pathFileRel = file.PhysicalPath.Substring(root.Length);
             pathFileRel = pathFileRel.Replace(@"\", "/");
             pathFileRel = $"/{name}{pathFileRel}";

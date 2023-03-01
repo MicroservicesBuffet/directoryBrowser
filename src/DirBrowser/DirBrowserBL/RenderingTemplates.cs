@@ -2,8 +2,10 @@
 
 public class RenderingTemplates
 {
-    public string RenderStartFolders(FolderToRead[] flds)
+    public string RenderStartFolders(FolderToRead[]? flds)
     {
-        return FirstRendering.Render(flds);
+        if (flds == null)
+            return "no folders";
+        return FirstRendering.Render(flds); 
     }
-}
+} 

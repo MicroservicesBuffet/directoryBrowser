@@ -16,7 +16,7 @@ export default function DisplayFoldersAndFiles(
     const folderParentDisplay='/show/'+ (folderParent?folderParent+'/':'');
     const downloadFile =(path:string)=>{
       var url ='http://localhost:5288/api/v1.0/File/GetFileContent/';
-      window.alert(url+folderParent+'/'+path);
+      window.open(url+folderParent+'/'+path);
     }
 
     return <>

@@ -12,6 +12,7 @@ builder.Services.AddApiVersioning();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterFolders();
+builder.Services.AddTransient<FileOperations>();
 
 //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
 //   .AddNegotiate();

@@ -6,7 +6,8 @@ public class FolderToRead : IFileInfo
 {
     public FolderToRead()
     {
-        
+        Id = "";
+        FullPath = "";
     }
     public FolderToRead(DirectoryInfo di)
     {
@@ -64,14 +65,14 @@ public class FolderToRead : IFileInfo
                 return File.GetLastWriteTime(FullPath);
             }
         }
-    }
+    } 
 
     public bool IsDirectory => Directory.Exists(FullPath);
 
     public Stream CreateReadStream()
     {
         if (IsDirectory)
-            return null;
+            throw new ArgumentException("is folder");
         return File.OpenRead(FullPath);
     }
 }
