@@ -4,7 +4,8 @@ import {
   Box,
   VStack,
   theme,
-  StackDivider
+  StackDivider,
+  Link
 } from "@chakra-ui/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import DisplayFiles from "./DisplayFiles";
@@ -24,7 +25,16 @@ return (
   align='stretch'
 >
   <Box textAlign="center"  h='40px' bg='white' fontSize="30px">
-    Directory browser and editor
+    Directory browser and editor   &nbsp;
+    <Link
+            color="teal.500"
+            href="/help/"
+            fontSize="2xl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Help
+          </Link>
   </Box>
   
   <Box>
