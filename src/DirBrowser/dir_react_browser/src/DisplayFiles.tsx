@@ -1,10 +1,7 @@
 import { Link } from 'react-router-dom';
 import {
-    QueryClient,
-    QueryClientProvider,
     useQuery,
   } from '@tanstack/react-query'
-import { useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { FolderToRead } from './genericFiles/FolderToRead';
 import DisplayFoldersAndFiles from './justDisplayGUI/displayFoldersAndFiles';
@@ -28,12 +25,12 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
     
 
     const fetchFolders = (): Promise<FolderToRead[]> =>
-    fetch('http://localhost:5288/api/v1.0/File/GetRootFolders').then(
+    fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetRootFolders').then(
       (res) => res.json() ,
     );
 
     const fetchFoldersFromFolder = (): Promise<FolderToRead[]> =>
-    fetch('http://localhost:5288/api/v1.0/File/GetFolderContent/'+root).then(
+    fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFolderContent/'+root).then(
       (res) => res.json() ,
     )
 

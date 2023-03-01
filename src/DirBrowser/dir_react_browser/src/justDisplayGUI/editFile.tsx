@@ -1,5 +1,4 @@
 import { useDisclosure, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Textarea } from "@chakra-ui/react"
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FolderToRead } from "../genericFiles/FolderToRead";
 type PropsDisplayEditFile = {
@@ -14,7 +13,7 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
     const openAndLoad=()=>{
         onOpen();
         const fetchLines = (): Promise<string> =>
-            fetch('http://localhost:5288/api/v1.0/File/GetFileText/'+ folderParentDisplay + fileObject.name).then(
+            fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileText/'+ folderParentDisplay + fileObject.name).then(
                 (res) => res.text() 
             );
 
@@ -28,7 +27,7 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
     }
     const Save = ()=>{
       const fetchLines = (): Promise<string> =>
-      fetch('http://localhost:5288/api/v1.0/File/SetFileText/',
+      fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/SetFileText/',
       {
         method: 'POST',
         headers: {

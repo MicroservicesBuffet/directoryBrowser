@@ -16,7 +16,7 @@ export default function DisplayFoldersAndFiles(
     const dirs=allData.filter(it=>it.isDirectory);
     const folderParentDisplay='/show/'+ (folderParent?folderParent+'/':'');
     const downloadFile =(path:string)=>{
-      var url ='http://localhost:5288/api/v1.0/File/GetFileContent/';
+      var url =''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileContent/';
       window.open(url+folderParent+'/'+path);
     }
 
