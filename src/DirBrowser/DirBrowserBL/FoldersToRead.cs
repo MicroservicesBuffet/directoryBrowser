@@ -1,14 +1,28 @@
 ﻿using System.IO;
 
 namespace DirBrowserBL;
+public interface IFileHistory
+{
+    public string? User { get; set; }
+    public string? Content { get; set; }
+    public string KeyHistory();
+    public DateTimeOffset LastModified { get; }
 
-public class FolderToRead : IFileInfo
+}
+
+public interface IHistoryFileString
+{
+    int AddHistory(IFileHistory fileHistory);
+    IFileHistory[] History(FolderToRead fld);
+}
+public class FolderToRead : IFileInfo, IFileHistory
 {
     public FolderToRead()
     {
         Id = "";
         FullPath = "";
     }
+    
     public FolderToRead(DirectoryInfo di)
     {
         this.Id= di.Name;
@@ -69,10 +83,18 @@ public class FolderToRead : IFileInfo
 
     public bool IsDirectory => Directory.Exists(FullPath);
 
+    string? IFileHistory.User { get ; set ; }
+    string? IFileHistory.Content { get ; set ; }
+    string IFileHistory.KeyHistory()
+    {
+        return this.PhysicalPath + "/" + this.LastModified.ToString("r");
+    }
     public Stream CreateReadStream()
     {
         if (IsDirectory)
             throw new ArgumentException("is folder");
         return File.OpenRead(FullPath);
     }
+
+    
 }

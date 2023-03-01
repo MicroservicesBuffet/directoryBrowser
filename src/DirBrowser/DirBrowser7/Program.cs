@@ -1,4 +1,6 @@
 
+using BrowserHistory;
+using DirBrowserBL;
 using Microsoft.Extensions.Configuration;
 using NetCore2BlocklyNew;
 
@@ -13,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterFolders();
 builder.Services.AddTransient<FileOperations>();
+builder.Services.AddSingleton<IHistoryFileString, HistoryFileString>();
 
 //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
 //   .AddNegotiate();
@@ -50,4 +53,5 @@ app.UseDirs(app.Configuration);
 app.MapControllers();
 app.UseBlocklyUI(app.Environment);
 app.UseBlocklyAutomation();
+app.MapFallbackToFile("/show/{**slug:nonfile}", "index.html");
 app.Run();

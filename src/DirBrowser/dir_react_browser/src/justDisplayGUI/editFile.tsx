@@ -67,7 +67,7 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
 
               {(dataLines.length>0) && 
               <> 
-              <Textarea value={textToSave} onChange={handleMessageChange}  />
+              <Textarea height={'700px'} value={textToSave} onChange={handleMessageChange} size={'lg'}   />
               </>
               }
             </ModalBody>

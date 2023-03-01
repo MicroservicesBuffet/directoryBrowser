@@ -1,7 +1,8 @@
-import { TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Tfoot, Button, } from "@chakra-ui/react";
+import { TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Tfoot, Button, Box, } from "@chakra-ui/react";
 import { FolderToRead } from "../genericFiles/FolderToRead";
 import {Link } from 'react-router-dom';
 import EditFile from "./editFile";
+import HistoryFile from "./history";
 type PropsDisplayFoldersAndFiles = {
     allData: FolderToRead[],
     folderParent:string
@@ -37,7 +38,16 @@ export default function DisplayFoldersAndFiles(
         <Tr  key={it.id}>
         <Td>{index+1}</Td>
         <Td>
+        {
+        it.isDirectory && 
+          <Box bg='pink.100'>
           <Link to={folderParentDisplay + it.name}>{it.name}</Link> 
+          </Box>
+        }
+        {
+          (!it.isDirectory) && 
+          <>{it.name}</>
+        }
         </Td>
         <Td><>
           {it.isDirectory?"Folder":"File" }  <br />      
@@ -55,6 +65,9 @@ export default function DisplayFoldersAndFiles(
             {!it.isDirectory && 
             <>
               <Button onClick={()=>downloadFile(it.name)} colorScheme='blue'>Download</Button>
+              <hr />
+              <HistoryFile fileObject={it} folderParentDisplay={folderParentDisplay.replace('/show/','')}></HistoryFile> 
+              <hr />
               <EditFile fileObject={it} folderParentDisplay={folderParentDisplay.replace('/show/','')}></EditFile>
               </>
              }
