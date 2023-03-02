@@ -96,6 +96,7 @@ jobs:
 
     - name: Release
       uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
       with:
         body: "Latest Release for Manual Install"
         generate_release_notes: true
@@ -103,8 +104,9 @@ jobs:
         prerelease: false
         files:  |
             ${{github.workspace}}/releaseWinX64.zip
-        tag: v${{ env.GITHUB_SHA }}
-        tag_name: v${{ env.GITHUB_SHA }}
+        # tag: v${{ env.GITHUB_SHA }}
+        # tag_name: v${{ env.GITHUB_SHA }}
+        
 
     - name: delete older-releases@v0
       uses: dev-drprasad/delete-older-releases@v0.2.0
