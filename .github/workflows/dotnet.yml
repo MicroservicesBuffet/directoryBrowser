@@ -84,6 +84,38 @@ jobs:
       with:
         name: DirBrowser7_Win64
         path: 'src/DirBrowser/DirBrowser7/myappArtifact'
+
+    - name: Archive Release  
+      uses: thedoctor0/zip-release@master
+      with:
+        type: 'zip'
+        filename: 'releaseWinX64.zip'
+        path: '${{github.workspace}}/src/DirBrowser/DirBrowser7/myappArtifact/*'
+        directory: '${{github.workspace}}/'
+        exclusions: '*.git* /*node_modules/* .editorconfig'       
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        body: "Latest Release for Manual Install"
+        generate_release_notes: true
+        draft: false
+        prerelease: false
+        files:  |
+            ${{github.workspace}}/releaseWinX64.zip
+        # tag: v${{ env.GITHUB_SHA }}
+        #tag_name: v${{ env.GITHUB_SHA }}
+
+    - name: delete older-releases@v0
+      uses: dev-drprasad/delete-older-releases@v0.2.0
+      with:
+        #repo: <owner>/<repoName> # defaults to current repo
+        keep_latest: 4
+        #delete_tag_pattern: beta # defaults to ""
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
     #- name: Test
     #  run: dotnet test --no-build --verbosity normal
 
