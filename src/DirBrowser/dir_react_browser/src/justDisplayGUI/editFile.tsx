@@ -75,7 +75,7 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
               <Button colorScheme='blue' mr={3} onClick={onClose}>
                 Close,do not save
               </Button>
-              <Button variant='ghost' onClick={Save}>Save!</Button>
+              <Button colorScheme='red' onClick={Save}>Save!</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>

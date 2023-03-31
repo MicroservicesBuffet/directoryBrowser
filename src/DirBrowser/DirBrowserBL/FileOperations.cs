@@ -34,7 +34,7 @@ public class FileOperations
         var file = FullPathFile(path, folders);
         return await System.IO.File.ReadAllTextAsync(file);
     }
-    public async Task<int> SetFileText( SaveTextFile save, FolderToRead[] folders)
+    public async Task<int> SetFileText(string user, SaveTextFile save, FolderToRead[] folders)
     {
         
         var file = FullPathFile(save.pathFile ?? "", folders);
@@ -42,7 +42,7 @@ public class FileOperations
         var fld = new FolderToRead(new FileInfo(file));
         IFileHistory fileHistory = fld;
         fileHistory.Content = save.content;
-        fileHistory.User = "NOT KNOWN";
+        fileHistory.User = user;
         historyFileString.AddHistory(fileHistory);
         return (save.content ?? "").Length;
     }

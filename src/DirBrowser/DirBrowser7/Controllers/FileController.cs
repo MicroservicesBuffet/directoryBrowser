@@ -17,32 +17,34 @@ public class FileController : ControllerBase
     [HttpGet("{*path}")]
     public async Task<IFileHistory[]> GetFileHistory(string path, [FromServices] FolderToRead[] folders)
     {
-        await Task.Delay(5000);
+        await Task.Delay(1000);
         return fo.GetFileHistory(path, folders);
     }
     [HttpGet("{*path}")]
     public async Task<string> GetFileText(string path, [FromServices] FolderToRead[] folders)
     {
-        await Task.Delay(5000);
+        await Task.Delay(1000);
         return await fo.GetFileText(path,folders);
     }
     [HttpPost]
     public async Task<int> SetFileText([FromBody] SaveTextFile save, [FromServices] FolderToRead[] folders)
     {
-        await Task.Delay(5000);
-        return await fo.SetFileText(save, folders);
+        await Task.Delay(1000);
+        
+        var user = this.User?.Identity?.Name??"no auth user";
+        return await fo.SetFileText(user,save, folders);
     }
     [HttpGet]
     public async Task<FolderToRead[]> GetRootFolders([FromServices] FolderToRead[] folders)
     {
-        await Task.Delay(5000);
+        await Task.Delay(1000);
         return folders;
     }
 
     [HttpGet("{*path}")]
     public async Task<FileResult> GetFileContent(string path, [FromServices] FolderToRead[] folders)
     {
-        await Task.Delay(5000);
+        await Task.Delay(1000);
         var file = fo.FullPathFile(path, folders);
         return PhysicalFile(file, "application/octet-stream");
     }
@@ -50,13 +52,13 @@ public class FileController : ControllerBase
     [HttpGet]
     public async Task<bool> IsFolder(string path, FolderToRead[] folders)
     {
-        await Task.Delay(5000);
+        await Task.Delay(1000);
         return fo.IsFolder(path, folders);
         
     }[HttpGet("{*path}")]
     public async Task<FolderToRead[]> GetFolderContent(string path, [FromServices] FolderToRead[] folders)
     {
-        await Task.Delay(5000);
+        await Task.Delay(1000);
         return fo.GetFolderContent(path, folders);
 
     }
