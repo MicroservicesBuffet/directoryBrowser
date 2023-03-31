@@ -5,6 +5,7 @@ using Microsoft.Extensions.FileProviders;
 using System.Text;
 using System.Text.Unicode;
 
+
 namespace BrowserHistory;
 
 public class HistoryFileString : IHistoryFileString
@@ -15,7 +16,20 @@ public class HistoryFileString : IHistoryFileString
     }
     //static Dictionary<string, IFileHistory> history = new();
     private readonly ApplicationDBContext context;
+    public async Task<IFileHistory?> GetFileContents(long id)
+    {
+        var data = await context.ModifiedUserFile.FirstOrDefaultAsync(it => it.ID == id);
+        if (data == null) return null;
+        var hist = new FolderToRead()
+        {
+            FileName = data.IDFileNavigation.FullPathFile,
+            User = data.IDUserNavigation.NameUser,
+            LastModified = data.ModifiedDate,
+            Content = data.Contents
+        };
 
+        return hist;
+    }
     public async Task<long> AddHistory(IFileHistory fileHistory)
     {
         //history.Add(fileHistory.KeyHistory(), fileHistory);
@@ -60,6 +74,7 @@ public class HistoryFileString : IHistoryFileString
         var history = context.ModifiedUserFile.Where(it => it.IDFile == file.IDFile)
             .Select(it => new
             {
+                it.ID,
                 it.ModifiedDate,
                 it.IDUserNavigation.NameUser
             })
@@ -67,6 +82,7 @@ public class HistoryFileString : IHistoryFileString
         var ret = history.Select(it =>
         new FolderToRead()
         {
+            DBId=it.ID,
             FileName = file.FullPathFile,
             User = it.NameUser,
             LastModified = it.ModifiedDate

@@ -371,7 +371,7 @@ public partial class ApplicationDBContext : DbContext
  var search = SearchModifiedUserFile.FromSearch(sc,colToSearch,value);
  /*
         var orderBy = new GeneratorFromDB.OrderBy<eModifiedUserFileColumns>();
-                    orderBy.FieldName = colToSearch;
+                    orderBy.FieldName = eModifiedUserFileColumns.ID;
                 orderBy.Asc = false;
         search.OrderBys = new[] { orderBy };
         search.PageNumber = 1;
@@ -411,12 +411,40 @@ public partial class ApplicationDBContext : DbContext
     }
     
 
+    //oneKey
+    
+    public  async Task<bool> ModifiedUserFileDelete(long id){
+
+        var item = await ModifiedUserFileGetSingle(id);
+        if(item == null)
+            return false;
+       this.ModifiedUserFile.Remove(item);
+        await this.SaveChangesAsync();
+        return true; 
+    }
+    public  async Task<bool> ModifiedUserFileModify(ModifiedUserFile val ){
+        //do the attach
+        /* var item = await ModifiedUserFileGetSingle(val.??ID?????);
+        if(item == null)
+            return false;
+        item.CopyFrom(val);        
+        await this.SaveChangesAsync();
+        */
+        return true; 
+    }
+    
+
+
+
+    public Task<ModifiedUserFile?> ModifiedUserFileGetSingle(long id){
+        return this.ModifiedUserFile.FirstOrDefaultAsync(e => e.ID == id);
+    }
     
 
     public IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileFind_AsyncEnumerable(SearchModifiedUserFile? search){
         IQueryable<ModifiedUserFile> data= this.ModifiedUserFile ;
         if(search == null){
-                        return data.AsAsyncEnumerable();
+                        return data.OrderByDescending(e => e.ID).AsAsyncEnumerable();
                     }
         data = search.TransformToWhere(data); 
         
@@ -696,7 +724,9 @@ public class InsertDataApplicationDBContext: I_InsertDataApplicationDBContext{
     public Task<long> GetAllCount();
     public Task<long> GetAllCount(SearchModifiedUserFile? search);
 
-        
+        //oneKey    
+    public Task<ModifiedUserFile?> ModifiedUserFileGetSingle(long id);
+    
     
     public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch_IDUser(GeneratorFromDB.SearchCriteria sc,  long value);
     public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearchNull_IDUser(GeneratorFromDB.SearchCriteria sc);
@@ -706,6 +736,9 @@ public class InsertDataApplicationDBContext: I_InsertDataApplicationDBContext{
     
     public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch_ModifiedDate(GeneratorFromDB.SearchCriteria sc,  DateTime value);
     public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearchNull_ModifiedDate(GeneratorFromDB.SearchCriteria sc);
+    
+    public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch_ID(GeneratorFromDB.SearchCriteria sc,  long value);
+    public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearchNull_ID(GeneratorFromDB.SearchCriteria sc);
     
     public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch_Contents(GeneratorFromDB.SearchCriteria sc,  byte[] value);
     public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearchNull_Contents(GeneratorFromDB.SearchCriteria sc);
@@ -726,12 +759,16 @@ public class InsertDataApplicationDBContext: I_InsertDataApplicationDBContext{
         public IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileFind_AsyncEnumerable(SearchModifiedUserFile? search){
             return context.ModifiedUserFileFind_AsyncEnumerable(search);
         }
-        public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch(GeneratorFromDB.SearchCriteria sc, eModifiedUserFileColumns colToSearch, string? value){
+        //oneKey    
+    public Task<ModifiedUserFile?> ModifiedUserFileGetSingle(long id){
+            return context.ModifiedUserFileGetSingle(id);
+    }
+    public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch(GeneratorFromDB.SearchCriteria sc, eModifiedUserFileColumns colToSearch, string? value){
         var search =SearchModifiedUserFile.FromSearch(sc,colToSearch,value);
     /*
             var search = new SearchModifiedUserFile();
             var orderBy = new GeneratorFromDB.OrderBy<eModifiedUserFileColumns>();
-                              orderBy.FieldName = colToSearch;
+                              orderBy.FieldName = eModifiedUserFileColumns.ID;
           
             orderBy.Asc = false;
             search.OrderBys = new[] { orderBy };
@@ -780,6 +817,18 @@ public class InsertDataApplicationDBContext: I_InsertDataApplicationDBContext{
     }
     public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearchNull_ModifiedDate(GeneratorFromDB.SearchCriteria sc){
         return ModifiedUserFileSimpleSearch(sc,eModifiedUserFileColumns.ModifiedDate,null);
+
+    }
+
+
+        //False
+    public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch_ID(GeneratorFromDB.SearchCriteria sc,  long value){
+         return ModifiedUserFileSimpleSearch(sc,eModifiedUserFileColumns.ID,value.ToString());
+
+    
+    }
+    public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearchNull_ID(GeneratorFromDB.SearchCriteria sc){
+        return ModifiedUserFileSimpleSearch(sc,eModifiedUserFileColumns.ID,null);
 
     }
 

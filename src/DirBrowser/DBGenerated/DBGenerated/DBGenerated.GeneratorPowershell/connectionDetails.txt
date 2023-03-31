@@ -8,7 +8,7 @@
 		"ProjectForContext": "..\\DBGenerated.Context\\DBGenerated.Context.csproj",
 		"ProjectForClasses": "..\\DBGenerated.Models\\DBGenerated.Models.csproj",
 		"ProjectWithDesigner": "..\\DBGenerated.Controllers\\DBGenerated.Controllers.csproj",
-		"ConnectionString":"Data Source=.;Initial Catalog=tests;UId=sa;pwd=<YourStrong@Passw0rd>;TrustServerCertificate=true;",
+		"ConnectionString":"Data Source=.;Initial Catalog=TestData;UId=sa;pwd=<YourStrong@Passw0rd>;TrustServerCertificate=true;",
 		"ProjectCRA":"..\\DBGenerated.GeneratorCRA\\DBGenerated.GeneratorCRA.csproj"
 	}
 	]

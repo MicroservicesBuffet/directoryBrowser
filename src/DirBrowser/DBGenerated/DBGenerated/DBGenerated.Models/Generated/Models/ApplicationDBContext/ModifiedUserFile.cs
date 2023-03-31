@@ -14,6 +14,7 @@ public interface I_ModifiedUserFile_Table
         long IDUser { get; set; }
                 long IDFile { get; set; }
                 DateTime ModifiedDate { get; set; }
+                long ID { get; set; }
                 byte[] Contents { get; set; }
         }
 
@@ -34,6 +35,10 @@ public class ModifiedUserFile_Table : I_ModifiedUserFile_Table
         mc.IsPk = false ;
         mc.TypeJS = "Date";
         metaData.AddColumn(mc);
+        mc=new ("ID","long",false);                
+        mc.IsPk = true ;
+        mc.TypeJS = "number";
+        metaData.AddColumn(mc);
         mc=new ("Contents","byte[]",false);                
         mc.IsPk = false ;
         mc.TypeJS = "number[]";
@@ -43,11 +48,13 @@ public class ModifiedUserFile_Table : I_ModifiedUserFile_Table
         public long IDUser { get; set; }
                 public long IDFile { get; set; }
                 public DateTime ModifiedDate { get; set; }
+                public long ID { get; set; }
                 public byte[] Contents { get; set; }
              public void CopyFrom(I_ModifiedUserFile_Table other)  {
         this.IDUser = other.IDUser;
                 this.IDFile = other.IDFile;
                 this.ModifiedDate = other.ModifiedDate;
+                this.ID = other.ID;
                 this.Contents = other.Contents;
             }
 
@@ -77,6 +84,7 @@ public partial class ModifiedUserFile : I_ModifiedUserFile_Table
         this.IDUser = other.IDUser;
                 this.IDFile = other.IDFile;
                 this.ModifiedDate = other.ModifiedDate;
+                this.ID = other.ID;
                 this.Contents = other.Contents;
             }
 
@@ -88,24 +96,24 @@ public enum eModifiedUserFileColumns {
         ,IDUser 
                 ,IDFile 
                 ,ModifiedDate 
+                ,ID 
                 ,Contents 
         }
 
 //finish ADDED by code generator
 
-[PrimaryKey("IDUser", "IDFile", "ModifiedDate")]
 
 public partial class ModifiedUserFile
 {
-    [Key]
     public long IDUser { get; set; }
 
-    [Key]
     public long IDFile { get; set; }
 
-    [Key]
     [Column(TypeName = "datetime")]
     public DateTime ModifiedDate { get; set; }
+
+    [Key]
+    public long ID { get; set; }
 
     public byte[] Contents { get; set; } = null!;
 

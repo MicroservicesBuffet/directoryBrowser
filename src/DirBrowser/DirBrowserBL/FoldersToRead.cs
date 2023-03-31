@@ -3,6 +3,7 @@
 namespace DirBrowserBL;
 public class FolderToRead : IFileInfo, IFileHistory
 {
+    
     public FolderToRead()
     {
         Id = "";
@@ -19,6 +20,7 @@ public class FolderToRead : IFileInfo, IFileHistory
         this.Id = fi.Name;
         this.FullPath = fi.FullName;
     }
+    public long DBId { get; set; }
     public string Id { get; set; }
     public string FullPath { get; set; }
 

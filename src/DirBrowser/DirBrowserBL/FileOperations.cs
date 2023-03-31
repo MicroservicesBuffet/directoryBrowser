@@ -21,6 +21,7 @@ public class FileOperations
     {
         this.historyFileString = historyFileString;
     }
+
     public async Task<IFileHistory[]?> GetFileHistory(string path, FolderToRead[] folders)
     {
 
@@ -46,7 +47,11 @@ public class FileOperations
         await historyFileString.AddHistory(fileHistory);
         return (save.content ?? "").Length;
     }
-    
+    public async Task<IFileHistory?> GetFileContents(long id)
+    {
+        return await historyFileString.GetFileContents(id);
+
+    }
 
     public string FullPathFile(string path,  FolderToRead[] folders)
     {
@@ -115,6 +120,7 @@ public class FileOperations
         var di = new DirectoryInfo(pathFull);
         return di;
     }
+    
     public FolderToRead[] GetFolderContent(string path,  FolderToRead[] folders)
     {
         

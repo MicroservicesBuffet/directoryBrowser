@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Generated;
 
-[PrimaryKey("IDUser", "IDFile", "ModifiedDate")]
 public partial class SearchModifiedUserFile:  GeneratorFromDB.Search<eModifiedUserFileColumns,ModifiedUserFile>
 {
     //private ApplicationDBContext _context;
@@ -18,7 +17,7 @@ public static SearchModifiedUserFile FromSearch(GeneratorFromDB.SearchCriteria s
     {
         var search = new SearchModifiedUserFile();
         var orderBy = new GeneratorFromDB.OrderBy<eModifiedUserFileColumns>();
-                    orderBy.FieldName = colToSearch;
+                orderBy.FieldName = eModifiedUserFileColumns.ID ;;
         
         orderBy.Asc = false;
         search.OrderBys = new[] { orderBy };
@@ -69,6 +68,14 @@ public static SearchModifiedUserFile FromSearch(GeneratorFromDB.SearchCriteria s
                 
                 break;
 
+                    case eModifiedUserFileColumns.ID:
+                if(order.Asc)
+                    ret = data.OrderBy(it=>it.ID);
+                else
+                    ret = data.OrderByDescending(it=>it.ID);
+                
+                break;
+
                     case eModifiedUserFileColumns.Contents:
                 if(order.Asc)
                     ret = data.OrderBy(it=>it.Contents);
@@ -103,6 +110,13 @@ public static SearchModifiedUserFile FromSearch(GeneratorFromDB.SearchCriteria s
                     ret = ret.ThenBy(it=>it.ModifiedDate);
                 else
                     ret = ret.ThenByDescending(it=>it.ModifiedDate);
+                
+                break;
+                    case eModifiedUserFileColumns.ID:
+                if(order.Asc)
+                    ret = ret.ThenBy(it=>it.ID);
+                else
+                    ret = ret.ThenByDescending(it=>it.ID);
                 
                 break;
                     case eModifiedUserFileColumns.Contents:
@@ -397,6 +411,79 @@ public static SearchModifiedUserFile FromSearch(GeneratorFromDB.SearchCriteria s
                 //continue;
         } //end use this to define value in smaller scope
             
+                    
+            case eModifiedUserFileColumns.ID:
+                //long isNullable False
+                if(s.Value == null)
+        {
+                            throw new ArgumentException("ModifiedUserFile.ID cannot be null");
+                                }//end if s.value is null -search for null
+        //if we are here, s.Value is not null
+        { //use this to define value in smaller scope
+                        var valueArray = s.Value
+                    .Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .Select(it=>long.Parse(it))
+                    .ToArray();
+                var value = valueArray[0];
+                  
+          
+        switch(s.Criteria){
+
+            case GeneratorFromDB.SearchCriteria.Between:
+                if(valueArray?.Length != 2){
+                    throw new ArgumentException("between must have 2 args, separated by comma => value is:" + s.Value);
+                }
+                                    returnValue =returnValue.Where(it=>it.ID >= valueArray[0] && it.ID <= valueArray[1]);
+                  
+                continue;
+            case GeneratorFromDB.SearchCriteria.NotBetween:
+            
+            if(valueArray?.Length != 2){
+                    throw new ArgumentException("not between must have 2 args, separated by comma => value is:" + s.Value);
+                }
+                                    returnValue =returnValue.Where(it=>it.ID < valueArray[0] || it.ID > valueArray[1]);
+                  
+                continue;
+            case GeneratorFromDB.SearchCriteria.InArray:
+                        returnValue =returnValue.Where(it=> valueArray!.Contains(it.ID));
+                  
+                continue;
+            case GeneratorFromDB.SearchCriteria.NotInArray:
+                        returnValue =returnValue.Where(it=> !valueArray!.Contains(it.ID));
+                  
+                continue;
+            case GeneratorFromDB.SearchCriteria.Equal:
+                returnValue =returnValue.Where(it=>it.ID==value);
+                continue;
+            case GeneratorFromDB.SearchCriteria.Different:
+                returnValue =returnValue.Where(it=>it.ID!=value);
+                continue;
+            
+            case GeneratorFromDB.SearchCriteria.Less:
+                                                returnValue =returnValue.Where(it=>it.ID<value);
+                                                
+                        continue;
+                    case GeneratorFromDB.SearchCriteria.LessOrEqual:
+                                                
+                        returnValue =returnValue.Where(it=>it.ID<=value);
+                                                
+                        continue;
+                    case GeneratorFromDB.SearchCriteria.Greater:
+                                                
+                        returnValue =returnValue.Where(it=>it.ID>value);
+                                                continue;
+                    case GeneratorFromDB.SearchCriteria.GreaterOrEqual:
+                                                returnValue =returnValue.Where(it=>it.ID>=value);
+                                                continue;
+                                                                        
+
+            default:
+                throw new ArgumentException($"not found Criteria {(int)s.Criteria} {s.Criteria} for {s.FieldName}");
+        }//end switch after s.Criteria
+
+                //continue;
+        } //end use this to define value in smaller scope
+            
                 }//end switch  
        }//end foreach
     return returnValue;
@@ -408,6 +495,8 @@ public static SearchModifiedUserFile FromSearch(GeneratorFromDB.SearchCriteria s
     public long IDFile { get; set; }
 
     public DateTime ModifiedDate { get; set; }
+
+    public long ID { get; set; }
 
     public byte[] Contents { get; set; } = null!;
 

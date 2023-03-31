@@ -12,7 +12,10 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
     const [textToSave, setTextToSave]= useState('');
     const [startSaving, setStartSaving]=useState(false);
     const openAndLoad=()=>{
-        onOpen();
+      setData('');
+      setTextToSave('');
+      setStartSaving(false);  
+      onOpen();
         const fetchLines = (): Promise<string> =>
             fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileText/'+ folderParentDisplay + fileObject.name).then(
                 (res) => res.text() 
@@ -61,7 +64,7 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
         <Modal isOpen={isOpen} onClose={onClose} size={'full'}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Edit {fileObject.fullPath} : Number lines: {dataLines.length}</ModalHeader>
+            <ModalHeader>Edit {fileObject.fullPath} </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               {(dataLines.length===0) && <>Please wait, loading</>}

@@ -30,6 +30,7 @@ baseUrl:string = '';
         public iduser : number  = 0;
                 public idfile : number  = 0;
                 public modifieddate : Date  = new Date();
+                public id : number  = 0;
                 public contents : number[]  = [];
         }
 export class ApplicationDBContext_ModifiedUserFile_Table_Interaction {
@@ -170,6 +171,23 @@ const columns : ColumnsType<ApplicationDBContext_ModifiedUserFile_Table> =[
   } 
 
    ,{
+    title: 'ID',
+    dataIndex: 'id',
+    key: 'id',
+    sorter: (a:ApplicationDBContext_ModifiedUserFile_Table, b:ApplicationDBContext_ModifiedUserFile_Table) => 
+    {
+        if(a.id == null && b.id == null)
+            return 0;
+        
+        if(a.id == null)
+            return -1;
+        if(b.id == null)
+            return 1;
+                    return a.id - b.id;
+            }
+  } 
+
+   ,{
     title: 'Contents',
     dataIndex: 'contents',
     key: 'contents',
@@ -212,6 +230,10 @@ const columns : ColumnsType<ApplicationDBContext_ModifiedUserFile_Table> =[
 
     if (it.modifieddate != null)
        if (it.modifieddate.toString().toLowerCase().includes(val))
+        return true;
+
+    if (it.id != null)
+       if (it.id.toString().toLowerCase().includes(val))
         return true;
 
     if (it.contents != null)

@@ -14,18 +14,26 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
         onOpen();
         const fetchLines = (): Promise<historyFile[]> =>
             fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileHistory/'+ folderParentDisplay + fileObject.name).then(
-                (res) => res.json() 
+                (res) => {
+                  if(res.status === 200 )
+                    return res.json() ;
+                  if(res.status === 204)
+                    return [];
+                }
             );
 
             fetchLines()
                 .then(it=> {
+                    console.log(it);
                     setData(it);
                 });
                 
 
     }
 
-
+    const downloadFile=(dbId:number)=>{
+      window.open(process.env.REACT_APP_URL+'api/v1.0/File/GetFileHistory/'+dbId);
+    };
     return (
       <>
         <Button colorScheme='teal' onClick={openAndLoad}>History {fileObject.name}</Button>
@@ -47,16 +55,17 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
       <Tr>
         <Th>Nr</Th>
         <Th>Name</Th>
+        <Th>Download</Th>
       </Tr>
     </Thead>
     <Tbody>
        {data.sort((a,b)=>b.lastModified.valueOf()- a.lastModified.valueOf()).map((it,index) =>
         <Tr  key={index}>
-        <Td>{index+1}</Td>
+        <Td>{data.length - index}</Td>
         <Td><>
           Modified by <b>{it.user}</b> at {new Date(it.lastModified).toLocaleString()} UTC
           </></Td>
-        
+        <Td><Button onClick={()=>downloadFile(it.dbId)} colorScheme='blue'>Download</Button> </Td>
       </Tr>
        )
        } 

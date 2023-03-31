@@ -62,4 +62,14 @@ public class FileController : ControllerBase
         return fo.GetFolderContent(path, folders);
 
     }
+    [HttpGet("{id}")]
+    public async Task<FileResult?> GetFileHistory(long id)
+    {
+        await Task.Delay(1000);
+        var data= await fo.GetFileContents(id);
+        if (data == null || data.Content == null)
+            return null;
+        var f = Path.GetFileName(data.FileName);
+        return File(data.Content, "application/octet-stream", data.User + "_" + data.LastModified.ToString("yyyyMMddHHmmss") + "_" + f);
+    }
 }
