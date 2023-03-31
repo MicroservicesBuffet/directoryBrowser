@@ -1,4 +1,8 @@
 
+using Generated;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterFolders();
 builder.Services.AddTransient<FileOperations>();
-builder.Services.AddSingleton<IHistoryFileString, HistoryFileString>();
+builder.Services.AddTransient<IHistoryFileString, HistoryFileString>();
 
 //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
 //   .AddNegotiate();
@@ -20,6 +24,20 @@ builder.Services.AddSingleton<IHistoryFileString, HistoryFileString>();
 //    // By default, all incoming requests will be authorized according to the default policy.
 //    options.FallbackPolicy = options.DefaultPolicy;
 //});
+var cnString = builder.Configuration.GetConnectionString("ApplicationDBContext");
+if (string.IsNullOrWhiteSpace(cnString))
+{
+    throw new ArgumentException("please add  connection string ApplicationDBContext into appsettings.json ");
+}
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+{
+    //options.UseSqlServer("Data Source=.;Initial Catalog=TestData;UId=sa;pwd=<YourStrong@Passw0rd>;TrustServerCertificate=true;");
+    options.UseSqlServer(cnString);
+}
+          );
+
+
+
 builder.Host.UseNLog();
 builder.Services.AddLogging(it =>
 {
@@ -40,7 +58,6 @@ app.UseCors(it => it
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 
 //app.UseHttpsRedirection();

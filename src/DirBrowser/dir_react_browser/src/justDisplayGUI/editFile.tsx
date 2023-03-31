@@ -10,6 +10,7 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [dataLines, setData]=useState<string>('');
     const [textToSave, setTextToSave]= useState('');
+    const [startSaving, setStartSaving]=useState(false);
     const openAndLoad=()=>{
         onOpen();
         const fetchLines = (): Promise<string> =>
@@ -26,6 +27,7 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
 
     }
     const Save = ()=>{
+      setStartSaving(true);
       const fetchLines = (): Promise<string> =>
       fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/SetFileText/',
       {
@@ -72,10 +74,15 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
             </ModalBody>
   
             <ModalFooter>
+              {startSaving && <>Saving...</>}
+              {!startSaving && 
+              <>
               <Button colorScheme='blue' mr={3} onClick={onClose}>
                 Close,do not save
               </Button>
               <Button colorScheme='red' onClick={Save}>Save!</Button>
+              </>
+              }
             </ModalFooter>
           </ModalContent>
         </Modal>

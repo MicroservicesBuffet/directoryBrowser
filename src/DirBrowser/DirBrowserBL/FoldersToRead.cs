@@ -1,20 +1,6 @@
 ﻿using System.IO;
 
 namespace DirBrowserBL;
-public interface IFileHistory
-{
-    public string? User { get; set; }
-    public string? Content { get; set; }
-    public string KeyHistory();
-    public DateTimeOffset LastModified { get; }
-
-}
-
-public interface IHistoryFileString
-{
-    int AddHistory(IFileHistory fileHistory);
-    IFileHistory[] History(FolderToRead fld);
-}
 public class FolderToRead : IFileInfo, IFileHistory
 {
     public FolderToRead()
@@ -65,11 +51,14 @@ public class FolderToRead : IFileInfo, IFileHistory
     public string PhysicalPath => FullPath;
 
     public string Name => Id;
-
+    private DateTimeOffset? lastModifiedSet = null;
     public DateTimeOffset LastModified 
     {
         get 
         {
+            if (lastModifiedSet.HasValue)
+                return lastModifiedSet.Value;
+
             if (IsDirectory)
             {
                 return Directory.GetLastWriteTime(FullPath);
@@ -79,13 +68,26 @@ public class FolderToRead : IFileInfo, IFileHistory
                 return File.GetLastWriteTime(FullPath);
             }
         }
+        set {
+            lastModifiedSet = value;
+
+        }
     } 
 
     public bool IsDirectory => Directory.Exists(FullPath);
 
-    string? IFileHistory.User { get ; set ; }
-    string? IFileHistory.Content { get ; set ; }
-    string IFileHistory.KeyHistory()
+    public string? User { get ; set ; }
+    public byte[]? Content { get ; set ; }
+    public string? FileName { get 
+        {
+            return TransformFullPath;
+        }
+        set {
+            FullPath = value??"";
+        }
+    }
+    
+    public string KeyHistory()
     {
         return this.PhysicalPath + "/" + this.LastModified.ToString("r");
     }

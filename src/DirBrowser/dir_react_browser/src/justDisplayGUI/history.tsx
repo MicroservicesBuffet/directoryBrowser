@@ -33,7 +33,7 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
         <Modal isOpen={isOpen} onClose={onClose} size={'full'}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>HGistory entries for {fileObject.fullPath} </ModalHeader>
+            <ModalHeader>History entries for {fileObject.fullPath} </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               {(data === null) && <>Please wait, loading</>}
@@ -47,19 +47,15 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
       <Tr>
         <Th>Nr</Th>
         <Th>Name</Th>
-        <Th>Details</Th>        
       </Tr>
     </Thead>
     <Tbody>
-       {data.map((it,index) =>
+       {data.sort((a,b)=>b.lastModified.valueOf()- a.lastModified.valueOf()).map((it,index) =>
         <Tr  key={index}>
         <Td>{index+1}</Td>
         <Td><>
-          Modified by {it.user} at {it.lastModified}
+          Modified by <b>{it.user}</b> at {new Date(it.lastModified).toLocaleString()} UTC
           </></Td>
-        <Td>
-        <Textarea isReadOnly={true} value={it.content} size={'lg'}  />
-          </Td>
         
       </Tr>
        )
@@ -68,7 +64,7 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
     </Tbody>
     <Tfoot>
       <Tr>
-        <Th>--</Th>
+        <Th>File {folderParentDisplay + fileObject.name}</Th>
         <Th>==</Th>
         <Th>--</Th>
       </Tr>

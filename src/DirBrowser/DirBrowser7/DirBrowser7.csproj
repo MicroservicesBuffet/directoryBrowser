@@ -17,10 +17,14 @@
 	  <PackageReference Include="NetCore2Blockly" Version="7.2023.228.2023" />
 	  <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.2" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.1" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.1" />
+
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BrowserHistory\BrowserHistory.csproj" />
+    <ProjectReference Include="..\DBGenerated\DBGenerated\DBGenerated.Context\DBGenerated.Context.csproj" />
     <ProjectReference Include="..\DirBrowserBL\DirBrowserBL.csproj" />
   </ItemGroup>
 

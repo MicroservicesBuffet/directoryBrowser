@@ -21,12 +21,12 @@ public class FileOperations
     {
         this.historyFileString = historyFileString;
     }
-    public IFileHistory[] GetFileHistory(string path, FolderToRead[] folders)
+    public async Task<IFileHistory[]?> GetFileHistory(string path, FolderToRead[] folders)
     {
 
         var file = FullPathFile(path, folders);
         var fld = new FolderToRead(new FileInfo(file));
-        return historyFileString.History(fld);
+        return await historyFileString.History(fld);
     }
     public async Task<string> GetFileText(string path,  FolderToRead[] folders)
     {
@@ -41,9 +41,9 @@ public class FileOperations
         await System.IO.File.WriteAllTextAsync(file, save.content ?? "");
         var fld = new FolderToRead(new FileInfo(file));
         IFileHistory fileHistory = fld;
-        fileHistory.Content = save.content;
+        fileHistory.Content =Encoding.UTF32.GetBytes(save.content??" ");
         fileHistory.User = user;
-        historyFileString.AddHistory(fileHistory);
+        await historyFileString.AddHistory(fileHistory);
         return (save.content ?? "").Length;
     }
     

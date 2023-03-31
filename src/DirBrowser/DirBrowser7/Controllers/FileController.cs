@@ -15,10 +15,10 @@ public class FileController : ControllerBase
         this.fo = fo;
     }
     [HttpGet("{*path}")]
-    public async Task<IFileHistory[]> GetFileHistory(string path, [FromServices] FolderToRead[] folders)
+    public async Task<IFileHistory[]?> GetFileHistory(string path, [FromServices] FolderToRead[] folders)
     {
         await Task.Delay(1000);
-        return fo.GetFileHistory(path, folders);
+        return await fo.GetFileHistory(path, folders);
     }
     [HttpGet("{*path}")]
     public async Task<string> GetFileText(string path, [FromServices] FolderToRead[] folders)
