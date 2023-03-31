@@ -52,7 +52,7 @@ export default function DisplayFoldersAndFiles(
         <Td><>
           {it.isDirectory?"Folder":"File" }  <br />      
           {it.fullPath}<br />
-          Modified at {it.lastModified}<br />
+          Modified at {new Date(it.lastModified).toLocaleString()}<br />
           {!it.isDirectory && <>Size {it.length}</>}
           </>
         </Td>
