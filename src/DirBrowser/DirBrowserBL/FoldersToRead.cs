@@ -3,22 +3,23 @@
 namespace DirBrowserBL;
 public class FolderToRead : IFileInfo, IFileHistory
 {
-    
+    public bool Enabled { get; set; } = true;
     public FolderToRead()
     {
         Id = "";
         FullPath = "";
     }
-    
-    public FolderToRead(DirectoryInfo di)
+    public string? RelPathFolder{get;set;}
+    public FolderToRead(DirectoryInfo di, string relPathFolder)
     {
         this.Id= di.Name;
         this.FullPath = di.FullName;
     }
-    public FolderToRead(FileInfo fi)
+    public FolderToRead(FileInfo fi,string relPathFolder)
     {
         this.Id = fi.Name;
         this.FullPath = fi.FullName;
+        this.RelPathFolder = relPathFolder + Path.PathSeparator + fi.Name;
     }
     public long DBId { get; set; }
     public string Id { get; set; }

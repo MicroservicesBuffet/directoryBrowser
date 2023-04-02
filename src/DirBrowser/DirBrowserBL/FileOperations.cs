@@ -26,7 +26,7 @@ public class FileOperations
     {
 
         var file = FullPathFile(path, folders);
-        var fld = new FolderToRead(new FileInfo(file));
+        var fld = new FolderToRead(new FileInfo(file),path);
         return await historyFileString.History(fld);
     }
     public async Task<string> GetFileText(string path,  FolderToRead[] folders)
@@ -40,7 +40,7 @@ public class FileOperations
         
         var file = FullPathFile(save.pathFile ?? "", folders);
         await System.IO.File.WriteAllTextAsync(file, save.content ?? "");
-        var fld = new FolderToRead(new FileInfo(file));
+        var fld = new FolderToRead(new FileInfo(file),save.pathFile??"");
         IFileHistory fileHistory = fld;
         fileHistory.Content =(save.content??" ");
         fileHistory.User = user;
@@ -125,9 +125,9 @@ public class FileOperations
     {
         
         var di = FolderFromContent(path, folders);
-        var files = di.EnumerateFiles().ToArray().Select(it => new FolderToRead(it)).ToArray();
-        var dirs = di.EnumerateDirectories().ToArray().Select(it => new FolderToRead(it)).ToArray();
-
+        var files = di.EnumerateFiles().ToArray().Select(it => new FolderToRead(it, path)).ToArray();
+        var dirs = di.EnumerateDirectories().ToArray().Select(it => new FolderToRead(it, path)).ToArray();
+        
         List<FolderToRead> ret = new();
         if (dirs.Length > 0)
             ret.AddRange(dirs);

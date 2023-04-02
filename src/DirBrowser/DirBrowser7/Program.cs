@@ -14,14 +14,14 @@ builder.Services.AddTransient<FileOperations>();
 builder.Services.AddTransient<IHistoryFileString, HistoryFileString>();
 builder.Services.AddTransient<ISearchDataModifiedUserFile, SearchDataModifiedUserFile>();
 
-//builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
-//   .AddNegotiate();
+builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
+   .AddNegotiate();
 
-//builder.Services.AddAuthorization(options =>
-//{
-//    // By default, all incoming requests will be authorized according to the default policy.
-//    options.FallbackPolicy = options.DefaultPolicy;
-//});
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = options.DefaultPolicy;
+    
+});
 
 var cnString = builder.Configuration.GetConnectionString("ApplicationDBContext");
 if (string.IsNullOrWhiteSpace(cnString))
@@ -56,12 +56,6 @@ if (!Environment.UserInteractive)
 
 var app = builder.Build();
 
-app.UseCors(it => it
-        .AllowAnyHeader()
-        .AllowCredentials()
-        .AllowAnyMethod()
-        .SetIsOriginAllowed(it => true)
-        );
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 {
@@ -71,8 +65,15 @@ app.UseCors(it => it
 app.UseMiddleware<MiddlewareShutdown>();
 
 //app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCors(it => it
+        .AllowAnyHeader()
+        .AllowCredentials()
+        .AllowAnyMethod()
+        .SetIsOriginAllowed(it => true)
+        );
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

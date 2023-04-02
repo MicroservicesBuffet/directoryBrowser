@@ -33,26 +33,30 @@ public class Metadata : ControllerBase
         long nr = 0;
         foreach (var item in fld)
         {
-            nr+= await AddFolderRecursive(fo, item.FullPath, fld); 
+            nr+= await AddFolderRecursive(fo, item.Name,fld); 
         }
         return nr;
     }
     private async Task<long> AddFolderRecursive(FileOperations fo,string path, FolderToRead[] fld)
     {
         long nr = 0;
-        foreach(var item in fo.GetFolderContent("", fld))
+        foreach(var item in fo.GetFolderContent(path, fld))
         {
             if(item.IsDirectory)
             {
-                nr+=await AddFolderRecursive(fo,item.FullPath, fld);
+                //var name = fo.FullPathFile(item.FullPath, fld);
+                nr +=await AddFolderRecursive(fo,item.Id, fld);
                 return nr ;
             }
             //is file
             nr++;
-            var file = new ModifiedFile();
-            file.FullPathFile = item.TransformFullPath;
-            context.ModifiedFile.Add(file);
-            await context.SaveChangesAsync();
+            ModifiedFile? file = context.ModifiedFile.FirstOrDefault(it => it.FullPathFile == item.TransformFullPath) ;  
+            if(file == null){
+                file = new ();
+                file.FullPathFile = item.TransformFullPath;
+                context.ModifiedFile.Add(file);
+                await context.SaveChangesAsync();
+            }
             var muf = new ModifiedUserFile();
             muf.IDFile = file.IDFile;
             muf.ModifiedDate = DateTime.Now;

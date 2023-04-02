@@ -13,7 +13,14 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
     const openAndLoad=()=>{
         onOpen();
         const fetchLines = (): Promise<historyFile[]> =>
-            fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileHistory/'+ folderParentDisplay + fileObject.name).then(
+            fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileHistory/'+ folderParentDisplay + fileObject.name
+            ,
+    {
+      method: 'GET',
+      credentials: 'include' 
+    }
+            
+            ).then(
                 (res) => {
                   if(res.status === 200 )
                     return res.json() ;

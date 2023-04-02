@@ -25,12 +25,20 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
     
 
     const fetchFolders = (): Promise<FolderToRead[]> =>
-    fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetRootFolders').then(
+    fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetRootFolders',
+    {
+      method: 'GET',
+      credentials: 'include' 
+    }).then(
       (res) => res.json() ,
     );
 
     const fetchFoldersFromFolder = (): Promise<FolderToRead[]> =>
-    fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFolderContent/'+root).then(
+    fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFolderContent/'+root,
+    {
+      method: 'GET',
+      credentials: 'include' 
+    }).then(
       (res) => res.json() ,
     )
 

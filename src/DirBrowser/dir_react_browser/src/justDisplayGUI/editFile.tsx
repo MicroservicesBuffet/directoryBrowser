@@ -17,7 +17,12 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
       setStartSaving(false);  
       onOpen();
         const fetchLines = (): Promise<string> =>
-            fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileText/'+ folderParentDisplay + fileObject.name).then(
+            fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileText/'+ folderParentDisplay + fileObject.name
+            ,
+    {
+      method: 'GET',
+      credentials: 'include' 
+    }).then(
                 (res) => res.text() 
             );
 
@@ -35,6 +40,8 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
       fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/SetFileText/',
       {
         method: 'POST',
+        credentials: 'include' ,
+        mode: 'cors',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

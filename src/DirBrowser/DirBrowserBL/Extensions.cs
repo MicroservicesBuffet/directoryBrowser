@@ -20,6 +20,7 @@ public static class Extensions
             throw new ArgumentException("no section configured");
 
         data =sect.Get<FolderToRead[]>();
+        data=data!.Where(x => x != null && x.Enabled).ToArray();  
         if((data?.Length??0) == 0)
         {
             throw new ArgumentException("no folders configured");
@@ -27,6 +28,7 @@ public static class Extensions
         
         foreach (var item in data!)
         {
+            item.RelPathFolder = item.Id;
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalSearchFileProvider(item.TransformFullPath),
