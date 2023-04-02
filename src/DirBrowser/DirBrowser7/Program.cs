@@ -1,8 +1,3 @@
-
-using Generated;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -35,10 +30,10 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     //options.UseSqlServer("Data Source=.;Initial Catalog=TestData;UId=sa;pwd=<YourStrong@Passw0rd>;TrustServerCertificate=true;");
     options.UseSqlServer(cnString);
 }
-          );
+            );
 
 
-
+builder.Services.AddSingleton<MiddlewareShutdown>();
 builder.Host.UseNLog();
 builder.Services.AddLogging(it =>
 {
@@ -59,7 +54,7 @@ app.UseCors(it => it
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<MiddlewareShutdown>();
 
 //app.UseHttpsRedirection();
 
@@ -71,5 +66,8 @@ app.UseDirs(app.Configuration);
 app.MapControllers();
 app.UseBlocklyUI(app.Environment);
 app.UseBlocklyAutomation();
+app.MapUsefullAll();
+app.UseAMS();
+
 app.MapFallbackToFile("/show/{**slug:nonfile}", "index.html");
-app.Run();
+await app.RunAsync(UsefullExtensions.UsefullExtensions.cts.Token);
