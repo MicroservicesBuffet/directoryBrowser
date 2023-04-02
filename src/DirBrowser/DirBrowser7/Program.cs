@@ -1,3 +1,5 @@
+using System.ServiceProcess;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -20,6 +22,7 @@ builder.Services.AddTransient<ISearchDataModifiedUserFile, SearchDataModifiedUse
 //    // By default, all incoming requests will be authorized according to the default policy.
 //    options.FallbackPolicy = options.DefaultPolicy;
 //});
+
 var cnString = builder.Configuration.GetConnectionString("ApplicationDBContext");
 if (string.IsNullOrWhiteSpace(cnString))
 {
@@ -40,6 +43,17 @@ builder.Services.AddLogging(it =>
     it.ClearProviders();
     it.AddNLog();
 });
+if (!Environment.UserInteractive)
+{
+    builder.Services.AddWindowsService(options =>
+    {
+        options.ServiceName = "DirBrowser";
+    });
+    //var ServicesToRun = new ServiceBase[] { backend };
+    //ServiceBase.Run(ServicesToRun);
+
+}
+
 var app = builder.Build();
 
 app.UseCors(it => it
