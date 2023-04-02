@@ -79,7 +79,7 @@ public class FolderToRead : IFileInfo, IFileHistory
     public bool IsDirectory => Directory.Exists(FullPath);
 
     public string? User { get ; set ; }
-    public byte[]? Content { get ; set ; }
+    public string? Content { get ; set ; }
     public string? FileName { get 
         {
             return TransformFullPath;

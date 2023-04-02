@@ -42,7 +42,7 @@ public class FileOperations
         await System.IO.File.WriteAllTextAsync(file, save.content ?? "");
         var fld = new FolderToRead(new FileInfo(file));
         IFileHistory fileHistory = fld;
-        fileHistory.Content =Encoding.UTF32.GetBytes(save.content??" ");
+        fileHistory.Content =(save.content??" ");
         fileHistory.User = user;
         await historyFileString.AddHistory(fileHistory);
         return (save.content ?? "").Length;

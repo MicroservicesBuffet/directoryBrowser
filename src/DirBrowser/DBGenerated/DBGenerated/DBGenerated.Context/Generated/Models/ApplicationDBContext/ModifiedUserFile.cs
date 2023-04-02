@@ -484,6 +484,100 @@ public static SearchModifiedUserFile FromSearch(GeneratorFromDB.SearchCriteria s
                 //continue;
         } //end use this to define value in smaller scope
             
+                    
+            case eModifiedUserFileColumns.Contents:
+                //string isNullable False
+                if(s.Value == null)
+        {
+                            switch(s.Criteria){
+                    case GeneratorFromDB.SearchCriteria.Equal:
+                        returnValue =returnValue.Where(it=>it.Contents==null);
+                        continue;
+                    case GeneratorFromDB.SearchCriteria.Different:
+                        returnValue =returnValue.Where(it=>it.Contents!=null);
+                        continue;
+                    default:
+                        throw new ArgumentException($"null cannot have {(int)s.Criteria} {s.Criteria} for {s.FieldName}");
+                    }
+                
+            
+                                }//end if s.value is null -search for null
+        //if we are here, s.Value is not null
+        { //use this to define value in smaller scope
+                                var value = s.Value;
+                var valueArray= s.Value?.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .ToArray();
+                ;
+          
+          
+        switch(s.Criteria){
+
+            case GeneratorFromDB.SearchCriteria.Between:
+                if(valueArray?.Length != 2){
+                    throw new ArgumentException("between must have 2 args, separated by comma => value is:" + s.Value);
+                }
+                                    returnValue =returnValue.Where(it=>String.Compare(it.Contents,valueArray[0]) >= 0  && String.Compare(it.Contents,valueArray[1]) <= 0);
+                  
+                continue;
+            case GeneratorFromDB.SearchCriteria.NotBetween:
+            
+            if(valueArray?.Length != 2){
+                    throw new ArgumentException("not between must have 2 args, separated by comma => value is:" + s.Value);
+                }
+                                    returnValue =returnValue.Where(it=>String.Compare(it.Contents,valueArray[0]) < 0  || String.Compare(it.Contents,valueArray[1]) > 0);
+                  
+                continue;
+            case GeneratorFromDB.SearchCriteria.InArray:
+                        returnValue =returnValue.Where(it=> valueArray!.Contains(it.Contents));
+                  
+                continue;
+            case GeneratorFromDB.SearchCriteria.NotInArray:
+                        returnValue =returnValue.Where(it=> !valueArray!.Contains(it.Contents));
+                  
+                continue;
+            case GeneratorFromDB.SearchCriteria.Equal:
+                returnValue =returnValue.Where(it=>it.Contents==value);
+                continue;
+            case GeneratorFromDB.SearchCriteria.Different:
+                returnValue =returnValue.Where(it=>it.Contents!=value);
+                continue;
+            
+            case GeneratorFromDB.SearchCriteria.Less:
+                                                    returnValue =returnValue.Where(it=>String.Compare(it.Contents,value) < 0 );
+                                                
+                        continue;
+                    case GeneratorFromDB.SearchCriteria.LessOrEqual:
+                                                    returnValue =returnValue.Where(it=>String.Compare(it.Contents,value) <= 0 );
+                                                
+                        continue;
+                    case GeneratorFromDB.SearchCriteria.Greater:
+                                                    returnValue =returnValue.Where(it=>String.Compare(it.Contents,value) > 0 );
+                                                continue;
+                    case GeneratorFromDB.SearchCriteria.GreaterOrEqual:
+                                                    returnValue =returnValue.Where(it=>String.Compare(it.Contents,value) >= 0 );
+                                                continue;
+                                            case GeneratorFromDB.SearchCriteria.Contains:
+                        returnValue =returnValue.Where(it=>it.Contents != null && it.Contents.Contains(value));
+                        continue;
+                    case GeneratorFromDB.SearchCriteria.StartsWith:
+                        returnValue =returnValue.Where(it=>it.Contents != null &&  it.Contents.StartsWith(value));
+                        continue;
+                    case GeneratorFromDB.SearchCriteria.EndsWith:
+                        returnValue =returnValue.Where(it=>it.Contents != null && it.Contents.EndsWith(value));
+                        continue;
+                    /*case SearchCriteria.Contains:
+                        returnValue =returnValue.Where(it=> it.Contents != null && it.Contents.Contains(value));
+                        continue;
+                    */
+                                                            
+
+            default:
+                throw new ArgumentException($"not found Criteria {(int)s.Criteria} {s.Criteria} for {s.FieldName}");
+        }//end switch after s.Criteria
+
+                //continue;
+        } //end use this to define value in smaller scope
+            
                 }//end switch  
        }//end foreach
     return returnValue;
@@ -498,7 +592,7 @@ public static SearchModifiedUserFile FromSearch(GeneratorFromDB.SearchCriteria s
 
     public long ID { get; set; }
 
-    public byte[] Contents { get; set; } = null!;
+    public string Contents { get; set; } = null!;
 
     //[ForeignKey("IDFile")]
     //[InverseProperty("ModifiedUserFile")]

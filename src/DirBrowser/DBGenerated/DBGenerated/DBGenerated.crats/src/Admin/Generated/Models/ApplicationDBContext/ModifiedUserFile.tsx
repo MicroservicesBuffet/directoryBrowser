@@ -31,7 +31,7 @@ baseUrl:string = '';
                 public idfile : number  = 0;
                 public modifieddate : Date  = new Date();
                 public id : number  = 0;
-                public contents : number[]  = [];
+                public contents : string  = '';
         }
 export class ApplicationDBContext_ModifiedUserFile_Table_Interaction {
     baseUrl:string = '';

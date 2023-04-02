@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace DirBrowser7.Controllers;
     
@@ -70,6 +71,7 @@ public class FileController : ControllerBase
         if (data == null || data.Content == null)
             return null;
         var f = Path.GetFileName(data.FileName);
-        return File(data.Content, "application/octet-stream", data.User + "_" + data.LastModified.ToString("yyyyMMddHHmmss") + "_" + f);
+        var cnt = Encoding.UTF8.GetBytes(data.Content);
+        return File(cnt, "application/octet-stream", data.User + "_" + data.LastModified.ToString("yyyyMMddHHmmss") + "_" + f);
     }
 }

@@ -29,7 +29,7 @@ erDiagram
       
       long ID 
       
-      byte-Array Contents 
+      string Contents 
     
     }
     ModifiedUserFile }o--|| ModifiedFile : FK_ModifiedUserFile_ModifiedFile

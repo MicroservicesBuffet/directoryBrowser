@@ -559,7 +559,7 @@ public partial class AdvancedSearch_ApplicationDBContext_ModifiedUserFileControl
 
         
     [HttpGet]
-    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_EqualValue( byte[]  value)
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_EqualValue( string  value)
     {
         var sc = GeneratorFromDB.SearchCriteria.Equal;
         await foreach (var item in _search.ModifiedUserFileSimpleSearch_Contents(sc, value))
@@ -568,7 +568,7 @@ public partial class AdvancedSearch_ApplicationDBContext_ModifiedUserFileControl
         }
     }
     [HttpGet]
-    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_DifferentValue( byte[]  value)
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_DifferentValue( string  value)
     {
         var sc = GeneratorFromDB.SearchCriteria.Different;
         await foreach (var item in _search.ModifiedUserFileSimpleSearch_Contents(sc, value))
@@ -577,14 +577,138 @@ public partial class AdvancedSearch_ApplicationDBContext_ModifiedUserFileControl
         }
     }
     [HttpGet]
-    public  async IAsyncEnumerable<ModifiedUserFile_Table> Contents_SimpleSearch(GeneratorFromDB.SearchCriteria sc,  byte[] value){
+    public  async IAsyncEnumerable<ModifiedUserFile_Table> Contents_SimpleSearch(GeneratorFromDB.SearchCriteria sc,  string value){
         await foreach(var item in _search.ModifiedUserFileSimpleSearch_Contents(sc,value))
         {
             yield return (ModifiedUserFile_Table)item!;
         }
     }
 
-             
+         
+     [HttpGet]
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_EqualValues( string[]  values)
+    {
+        string? value=null;
+        if(values.Length>0)
+            value=string.Join( ",",values);
+        var sc=SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.InArray,eModifiedUserFileColumns.Contents,value);
+        await foreach (var item in _search.ModifiedUserFileFind_AsyncEnumerable(sc))
+        {
+        
+            yield return (ModifiedUserFile_Table)item!;
+        }
+    }
+     [HttpGet]
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_DifferentValues( string[]  values)
+    {
+        string? value=null;
+        if(values.Length>0)
+            value=string.Join( ",",values);
+        var sc=SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.NotInArray,eModifiedUserFileColumns.Contents,value);
+        await foreach (var item in _search.ModifiedUserFileFind_AsyncEnumerable(sc))
+        {
+        
+            yield return (ModifiedUserFile_Table)item!;
+        }
+    }
+         [HttpGet]
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_Contains(string  val)
+    {
+        var sc = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.Contains, eModifiedUserFileColumns.Contents  , val);
+        await foreach (var item in _search.ModifiedUserFileFind_AsyncEnumerable(sc))
+        {
+
+            yield return (ModifiedUserFile_Table)item!;
+        }
+    }
+
+     [HttpGet]
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_EndsWith(string  val)
+    {
+        var sc = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.EndsWith, eModifiedUserFileColumns.Contents  , val);
+        await foreach (var item in _search.ModifiedUserFileFind_AsyncEnumerable(sc))
+        {
+
+            yield return (ModifiedUserFile_Table)item!;
+        }
+    }
+
+      [HttpGet]
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_StartsWith(string  val)
+    {
+        var sc = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.StartsWith, eModifiedUserFileColumns.Contents  , val);
+        await foreach (var item in _search.ModifiedUserFileFind_AsyncEnumerable(sc))
+        {
+
+            yield return (ModifiedUserFile_Table)item!;
+        }
+    }
+
+
+              [HttpGet]
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_LessOrEqual(string  val)
+    {
+        var sc = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.LessOrEqual, eModifiedUserFileColumns.Contents  , val.ToString());
+        await foreach (var item in _search.ModifiedUserFileFind_AsyncEnumerable(sc))
+        {
+
+            yield return (ModifiedUserFile_Table)item!;
+        }
+    }
+     [HttpGet]
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_Less(string  val)
+    {
+        var sc = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.Less, eModifiedUserFileColumns.Contents  , val.ToString());
+        await foreach (var item in _search.ModifiedUserFileFind_AsyncEnumerable(sc))
+        {
+
+            yield return (ModifiedUserFile_Table)item!;
+        }
+    }
+     
+      [HttpGet]
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_GreaterOrEqual(string  val)
+    {
+        var sc = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.GreaterOrEqual, eModifiedUserFileColumns.Contents  , val.ToString());
+        await foreach (var item in _search.ModifiedUserFileFind_AsyncEnumerable(sc))
+        {
+
+            yield return (ModifiedUserFile_Table)item!;
+        }
+    }
+     [HttpGet]
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_Greater(string  val)
+    {
+        var sc = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.Greater, eModifiedUserFileColumns.Contents  , val.ToString());
+        await foreach (var item in _search.ModifiedUserFileFind_AsyncEnumerable(sc))
+        {
+
+            yield return (ModifiedUserFile_Table)item!;
+        }
+    }
+     [HttpGet]
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_Between( string  valStart, string valEnd)
+    {
+        var sc = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.Between, eModifiedUserFileColumns.Contents, valStart +","+ valEnd);
+        await foreach (var item in _search.ModifiedUserFileFind_AsyncEnumerable(sc))
+        {
+
+            yield return (ModifiedUserFile_Table)item!;
+        }
+    }    
+
+    [HttpGet]
+    public async IAsyncEnumerable<ModifiedUserFile_Table> Contents_NotBetween( string  valStart, string valEnd)
+    {
+        var sc = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.NotBetween, eModifiedUserFileColumns.Contents, valStart +","+ valEnd);
+        await foreach (var item in _search.ModifiedUserFileFind_AsyncEnumerable(sc))
+        {
+
+            yield return (ModifiedUserFile_Table)item!;
+        }
+    }    
+
+            
 
 
     

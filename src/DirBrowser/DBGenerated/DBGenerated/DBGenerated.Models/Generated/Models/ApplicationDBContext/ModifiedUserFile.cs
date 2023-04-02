@@ -15,7 +15,7 @@ public interface I_ModifiedUserFile_Table
                 long IDFile { get; set; }
                 DateTime ModifiedDate { get; set; }
                 long ID { get; set; }
-                byte[] Contents { get; set; }
+                string Contents { get; set; }
         }
 
 public class ModifiedUserFile_Table : I_ModifiedUserFile_Table
@@ -39,9 +39,9 @@ public class ModifiedUserFile_Table : I_ModifiedUserFile_Table
         mc.IsPk = true ;
         mc.TypeJS = "number";
         metaData.AddColumn(mc);
-        mc=new ("Contents","byte[]",false);                
+        mc=new ("Contents","string",false);                
         mc.IsPk = false ;
-        mc.TypeJS = "number[]";
+        mc.TypeJS = "string";
         metaData.AddColumn(mc);
  //done with foreach property in static constructor
     }
@@ -49,7 +49,7 @@ public class ModifiedUserFile_Table : I_ModifiedUserFile_Table
                 public long IDFile { get; set; }
                 public DateTime ModifiedDate { get; set; }
                 public long ID { get; set; }
-                public byte[] Contents { get; set; }
+                public string Contents { get; set; }
              public void CopyFrom(I_ModifiedUserFile_Table other)  {
         this.IDUser = other.IDUser;
                 this.IDFile = other.IDFile;
@@ -115,7 +115,8 @@ public partial class ModifiedUserFile
     [Key]
     public long ID { get; set; }
 
-    public byte[] Contents { get; set; } = null!;
+    [Unicode(false)]
+    public string Contents { get; set; } = null!;
 
     [ForeignKey("IDFile")]
     [InverseProperty("ModifiedUserFile")]

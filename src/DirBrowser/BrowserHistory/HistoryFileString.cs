@@ -18,7 +18,10 @@ public class HistoryFileString : IHistoryFileString
     private readonly ApplicationDBContext context;
     public async Task<IFileHistory?> GetFileContents(long id)
     {
-        var data = await context.ModifiedUserFile.FirstOrDefaultAsync(it => it.ID == id);
+        var data = await context.ModifiedUserFile
+            .Include(m=>m.IDFileNavigation)
+            .Include(m=>m.IDUserNavigation)
+            .FirstOrDefaultAsync(it => it.ID == id);
         if (data == null) return null;
         var hist = new FolderToRead()
         {
@@ -57,7 +60,7 @@ public class HistoryFileString : IHistoryFileString
         }
         ModifiedUserFile muf = new()
         {
-            Contents = fileHistory.Content?? Encoding.ASCII.GetBytes(" "),
+            Contents = fileHistory.Content?? (" "),
             IDFile = file.IDFile,
             IDUser = user.IDUser,
             ModifiedDate = DateTime.UtcNow

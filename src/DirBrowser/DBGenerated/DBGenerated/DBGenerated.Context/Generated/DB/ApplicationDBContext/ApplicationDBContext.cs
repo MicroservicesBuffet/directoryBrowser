@@ -740,7 +740,7 @@ public class InsertDataApplicationDBContext: I_InsertDataApplicationDBContext{
     public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch_ID(GeneratorFromDB.SearchCriteria sc,  long value);
     public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearchNull_ID(GeneratorFromDB.SearchCriteria sc);
     
-    public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch_Contents(GeneratorFromDB.SearchCriteria sc,  byte[] value);
+    public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch_Contents(GeneratorFromDB.SearchCriteria sc,  string value);
     public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearchNull_Contents(GeneratorFromDB.SearchCriteria sc);
         } //interface searchdata   
 
@@ -834,7 +834,7 @@ public class InsertDataApplicationDBContext: I_InsertDataApplicationDBContext{
 
 
         //False
-    public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch_Contents(GeneratorFromDB.SearchCriteria sc,  byte[] value){
+    public  IAsyncEnumerable<ModifiedUserFile> ModifiedUserFileSimpleSearch_Contents(GeneratorFromDB.SearchCriteria sc,  string value){
          return ModifiedUserFileSimpleSearch(sc,eModifiedUserFileColumns.Contents,value.ToString());
 
     

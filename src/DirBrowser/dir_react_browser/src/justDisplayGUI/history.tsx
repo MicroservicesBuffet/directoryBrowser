@@ -1,4 +1,4 @@
-import { useDisclosure, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Textarea,  Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react"
+import { useDisclosure, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter,  Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react"
 import { useState } from "react";
 import { FolderToRead } from "../genericFiles/FolderToRead";
 import { historyFile } from "../genericFiles/historyFile";
@@ -24,8 +24,10 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
 
             fetchLines()
                 .then(it=> {
-                    console.log(it);
-                    setData(it);
+                   // console.log(it);
+                    var a=it.sort((a,b)=>b.dbId- a.dbId);
+                   // console.log(a);
+                    setData(a);
                 });
                 
 
@@ -59,7 +61,7 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
       </Tr>
     </Thead>
     <Tbody>
-       {data.sort((a,b)=>b.lastModified.valueOf()- a.lastModified.valueOf()).map((it,index) =>
+       {data.map((it,index) =>
         <Tr  key={index}>
         <Td>{data.length - index}</Td>
         <Td><>
