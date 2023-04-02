@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Generated;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace DirBrowser7.Controllers;
 
@@ -24,11 +25,17 @@ public class Metadata : ControllerBase
         u.NameUser = "AutomaticStartFirstTimeUser";
         context.ModifiedUser.Add(u);
         await context.SaveChangesAsync();
+        return true;
     }
     [HttpPost]
     public async Task<long> AddAllFilesToDB([FromServices] FileOperations fo ,[FromServices] FolderToRead[] fld)
-    {        
-        return await AddFolderRecursive(fo, "", fld);
+    {
+        long nr = 0;
+        foreach (var item in fld)
+        {
+            nr+= await AddFolderRecursive(fo, item.FullPath, fld); 
+        }
+        return nr;
     }
     private async Task<long> AddFolderRecursive(FileOperations fo,string path, FolderToRead[] fld)
     {
@@ -37,7 +44,7 @@ public class Metadata : ControllerBase
         {
             if(item.IsDirectory)
             {
-                nr+=await AddFolderRecursive(fo,item.PhysicalPath, fld);
+                nr+=await AddFolderRecursive(fo,item.FullPath, fld);
                 return nr ;
             }
             //is file
