@@ -10,10 +10,50 @@ namespace DirBrowser7.Controllers;
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
 public class Metadata : ControllerBase
 {
+    private readonly ApplicationDBContext context;
 
-    [HttpPost]
-    public async Task<bool> CreateDb([FromServices] ApplicationDBContext context)
+    public Metadata(ApplicationDBContext context)
     {
-        return await context.Database.EnsureCreatedAsync();
+        this.context = context;
+    }
+    [HttpPost]
+    public async Task<bool> CreateDb()
+    {
+        await context.Database.EnsureCreatedAsync();
+        var u = new ModifiedUser();
+        u.NameUser = "AutomaticStartFirstTimeUser";
+        context.ModifiedUser.Add(u);
+        await context.SaveChangesAsync();
+    }
+    [HttpPost]
+    public async Task<long> AddAllFilesToDB([FromServices] FileOperations fo ,[FromServices] FolderToRead[] fld)
+    {        
+        return await AddFolderRecursive(fo, "", fld);
+    }
+    private async Task<long> AddFolderRecursive(FileOperations fo,string path, FolderToRead[] fld)
+    {
+        long nr = 0;
+        foreach(var item in fo.GetFolderContent("", fld))
+        {
+            if(item.IsDirectory)
+            {
+                nr+=await AddFolderRecursive(fo,item.PhysicalPath, fld);
+                return nr ;
+            }
+            //is file
+            nr++;
+            var file = new ModifiedFile();
+            file.FullPathFile = item.TransformFullPath;
+            context.ModifiedFile.Add(file);
+            await context.SaveChangesAsync();
+            var muf = new ModifiedUserFile();
+            muf.IDFile = file.IDFile;
+            muf.ModifiedDate = DateTime.Now;
+            muf.Contents = await System.IO.File.ReadAllTextAsync(file.FullPathFile);
+            muf.IDUser = 1;
+            context.Add(muf);
+            await context.SaveChangesAsync();
+        }
+        return nr;
     }
 }
