@@ -14,12 +14,13 @@ public class FolderToRead : IFileInfo, IFileHistory
     {
         this.Id= di.Name;
         this.FullPath = di.FullName;
+        this.RelPathFolder = relPathFolder + "/" + this.Id;
     }
     public FolderToRead(FileInfo fi,string relPathFolder)
     {
         this.Id = fi.Name;
         this.FullPath = fi.FullName;
-        this.RelPathFolder = relPathFolder + Path.PathSeparator + fi.Name;
+        this.RelPathFolder = relPathFolder + "/" + fi.Name;
     }
     public long DBId { get; set; }
     public string Id { get; set; }

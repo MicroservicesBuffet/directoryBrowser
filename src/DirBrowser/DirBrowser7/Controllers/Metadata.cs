@@ -45,11 +45,11 @@ public class Metadata : ControllerBase
             if(item.IsDirectory)
             {
                 //var name = fo.FullPathFile(item.FullPath, fld);
-                nr +=await AddFolderRecursive(fo,item.Id, fld);
-                return nr ;
+                nr +=await AddFolderRecursive(fo,item.RelPathFolder??"", fld);
+                continue;
             }
             //is file
-            nr++;
+            
             ModifiedFile? file = context.ModifiedFile.FirstOrDefault(it => it.FullPathFile == item.TransformFullPath) ;  
             if(file == null){
                 file = new ();
@@ -57,13 +57,18 @@ public class Metadata : ControllerBase
                 context.ModifiedFile.Add(file);
                 await context.SaveChangesAsync();
             }
-            var muf = new ModifiedUserFile();
+
+            var muf = context.ModifiedUserFile.FirstOrDefault(it => it.IDFile == file.IDFile);
+            if (muf != null)
+                continue;
+            muf = new ModifiedUserFile();
             muf.IDFile = file.IDFile;
             muf.ModifiedDate = DateTime.Now;
             muf.Contents = await System.IO.File.ReadAllTextAsync(file.FullPathFile);
             muf.IDUser = 1;
             context.Add(muf);
             await context.SaveChangesAsync();
+            nr++;   
         }
         return nr;
     }
