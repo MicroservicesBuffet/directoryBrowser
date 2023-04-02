@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.RegisterFolders();
 builder.Services.AddTransient<FileOperations>();
 builder.Services.AddTransient<IHistoryFileString, HistoryFileString>();
+builder.Services.AddTransient<ISearchDataModifiedUserFile, SearchDataModifiedUserFile>();
 
 //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
 //   .AddNegotiate();

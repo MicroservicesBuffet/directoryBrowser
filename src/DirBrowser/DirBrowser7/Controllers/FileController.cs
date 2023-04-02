@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Generated;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
@@ -73,5 +74,12 @@ public class FileController : ControllerBase
         var f = Path.GetFileName(data.FileName);
         var cnt = Encoding.UTF8.GetBytes(data.Content);
         return File(cnt, "application/octet-stream", data.User + "_" + data.LastModified.ToString("yyyyMMddHHmmss") + "_" + f);
+    }
+    [HttpGet("{id}")]
+    public async Task<long> GetFileHistoryCount([FromServices] ISearchDataModifiedUserFile search, long id)
+    {
+
+        var s = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.Equal, eModifiedUserFileColumns.IDFile, id.ToString());
+        return await search.GetAllCount(s);       
     }
 }
