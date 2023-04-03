@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Server.HttpSys;
+using System.Runtime.InteropServices;
 using System.ServiceProcess;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,14 +16,14 @@ builder.Services.AddTransient<FileOperations>();
 builder.Services.AddTransient<IHistoryFileString, HistoryFileString>();
 builder.Services.AddTransient<ISearchDataModifiedUserFile, SearchDataModifiedUserFile>();
 
-builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
-   .AddNegotiate();
+//builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
+//   .AddNegotiate();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.FallbackPolicy = options.DefaultPolicy;
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.FallbackPolicy = options.DefaultPolicy;
     
-});
+//});
 
 var cnString = builder.Configuration.GetConnectionString("ApplicationDBContext");
 if (string.IsNullOrWhiteSpace(cnString))
@@ -49,11 +51,22 @@ if (!Environment.UserInteractive)
     {
         options.ServiceName = "DirBrowser";
     });
-    //var ServicesToRun = new ServiceBase[] { backend };
-    //ServiceBase.Run(ServicesToRun);
+   
 
 }
-
+builder.Services.AddAuthentication(HttpSysDefaults.AuthenticationScheme);
+//var ServicesToRun = new ServiceBase[] { backend };
+//ServiceBase.Run(ServicesToRun);
+if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+{
+    builder.WebHost.UseHttpSys(options =>
+    {
+        options.Authentication.Schemes =
+            AuthenticationSchemes.NTLM |
+            AuthenticationSchemes.Negotiate;
+        options.Authentication.AllowAnonymous = false;
+    });
+}
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -72,6 +85,7 @@ app.UseCors(it => it
         .AllowAnyMethod()
         .SetIsOriginAllowed(it => true)
         );
+
 
 app.UseAuthorization();
 
