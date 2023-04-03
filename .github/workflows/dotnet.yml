@@ -31,7 +31,7 @@ jobs:
         cd src
         cd DirBrowser
         cd dir_react_browser
-        npm i
+        npm i  --force 
         npm run build
         cp -r build/* ../DirBrowser7/wwwroot/    
 
