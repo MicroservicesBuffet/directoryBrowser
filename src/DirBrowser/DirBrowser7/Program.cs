@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Server.HttpSys;
+using Microsoft.Extensions.Options;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
 
@@ -15,7 +16,15 @@ builder.Services.RegisterFolders();
 builder.Services.AddTransient<FileOperations>();
 builder.Services.AddTransient<IHistoryFileString, HistoryFileString>();
 builder.Services.AddTransient<ISearchDataModifiedUserFile, SearchDataModifiedUserFile>();
-
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("AllowAll",
+                  builder => builder
+                  .SetIsOriginAllowed(it => true)
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials());
+});
 //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
 //   .AddNegotiate();
 
@@ -64,7 +73,7 @@ if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         options.Authentication.Schemes =
             AuthenticationSchemes.NTLM |
             AuthenticationSchemes.Negotiate;
-        options.Authentication.AllowAnonymous = false;
+        options.Authentication.AllowAnonymous = true;
     });
 }
 var app = builder.Build();
@@ -79,20 +88,16 @@ app.UseMiddleware<MiddlewareShutdown>();
 
 //app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors(it => it
-        .AllowAnyHeader()
-        .AllowCredentials()
-        .AllowAnyMethod()
-        .SetIsOriginAllowed(it => true)
-        );
+app.UseCors("AllowAll");
 
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseDirs(app.Configuration);
-app.MapControllers();
+app.MapControllers().RequireAuthorization();
 app.UseBlocklyUI(app.Environment);
 app.UseBlocklyAutomation();
 app.MapUsefullAll();

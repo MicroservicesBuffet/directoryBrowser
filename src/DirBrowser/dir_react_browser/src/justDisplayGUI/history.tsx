@@ -2,14 +2,40 @@ import { useDisclosure, Button, Modal, ModalOverlay, ModalContent, ModalHeader, 
 import { useState } from "react";
 import { FolderToRead } from "../genericFiles/FolderToRead";
 import { historyFile } from "../genericFiles/historyFile";
+import ReactDiffViewer from 'react-diff-viewer';
 type PropsDisplayEditFile = {
     fileObject: FolderToRead,
     folderParentDisplay :string
   };
 
+//   const oldCode = `
+// const a = 10
+// const b = 10
+// const c = () => console.log('foo')
+
+// if(a > 10) {
+//   console.log('bar')
+// }
+
+// console.log('done')
+// `;
+// const newCode = `
+// const a = 10
+// const boo = 10
+
+// if(a === 10) {
+//   console.log('bar')
+// }
+// `;
+
+interface DataToCompare{
+  file1:historyFile|null,
+  file2:historyFile|null
+}
 export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisplayEditFile) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [data, setData]=useState<historyFile[]|null>(null);
+    const [dataToCompare, setDataToCompare]=useState<DataToCompare|null>(null);
     const openAndLoad=()=>{
         onOpen();
         const fetchLines = (): Promise<historyFile[]> =>
@@ -39,7 +65,66 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
                 
 
     }
+    const ExistCompare= ():boolean=>{
+      console.log('asdasd', dataToCompare)
+      if(dataToCompare == null)
+        return false;
+      if(dataToCompare.file1 == null)
+        return false;
+      if(dataToCompare.file2 == null)
+        return false;
+      if(dataToCompare.file1.content == null)
+        return false;
+      
+      if(dataToCompare.file2.content == null)
+        return false;
 
+      return true;
+    }
+    const setCompare=(file:historyFile, nr:number)=>{
+      if(file.content == null)
+        fetch(process.env.REACT_APP_URL+'api/v1.0/File/GetFileHistory/'+file.dbId,{
+          method: 'GET',
+          credentials: 'include' 
+        })
+          .then(res=>res.text())
+          .then(it=>{
+            file.content=it;
+            setDataToCompare((prev) => {
+             
+              if(prev == null)
+                if(nr === 1)
+                  return {file1:file, file2:null};
+                else
+                  return {file1:null, file2:file};                
+              else
+              if(nr === 1)
+                return {file1:file, file2:prev.file2};
+              else
+              return {file1:prev.file1, file2:file};
+
+                
+            });  
+          });
+
+      if(nr === 1){
+        if(dataToCompare == null){
+          setDataToCompare({file1:file, file2:null});
+        }else{
+          setDataToCompare({file1:file, file2:dataToCompare.file2});
+        }
+
+      }
+      if(nr === 2){
+        if(dataToCompare == null){
+          setDataToCompare({file1:null, file2:file});
+        }else{
+          setDataToCompare({file1:dataToCompare.file1, file2:file});
+        }
+        
+      }
+      
+    }
     const downloadFile=(dbId:number)=>{
       window.open(process.env.REACT_APP_URL+'api/v1.0/File/GetFileHistory/'+dbId);
     };
@@ -64,7 +149,7 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
       <Tr>
         <Th>Nr</Th>
         <Th>Name</Th>
-        <Th>Download</Th>
+        <Th>Operations</Th>
       </Tr>
     </Thead>
     <Tbody>
@@ -74,7 +159,27 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
         <Td><>
           Modified by <b>{it.user}</b> at {new Date(it.lastModified).toLocaleString()} UTC
           </></Td>
-        <Td><Button onClick={()=>downloadFile(it.dbId)} colorScheme='blue'>Download</Button> </Td>
+        <Td>
+          <Button onClick={()=>downloadFile(it.dbId)} colorScheme='blue'>Download</Button>
+          <br /><br />
+          {(dataToCompare?.file1 !== it) && <>
+          <Button onClick={()=>setCompare(it,1)} colorScheme='blue'>
+            Compare 1            
+            </Button>    
+            </>
+            }
+            {(dataToCompare?.file1 === it) && <span>Selected 1!</span>}
+
+            {(dataToCompare?.file2 !== it) && <>
+            
+          <Button onClick={()=>setCompare(it,2)} colorScheme='blue'>
+            Compare 2
+           </Button>    
+           </>}
+           {(dataToCompare?.file2 === it) && <span>Selected 2!</span>}
+
+      </Td>
+      
       </Tr>
        )
        } 
@@ -89,7 +194,14 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
     </Tfoot>
   </Table>
 </TableContainer>
+{ExistCompare() && <>
 
+<ReactDiffViewer oldValue={dataToCompare!.file1!.content} newValue={dataToCompare!.file2!.content} splitView={true}
+leftTitle=  {dataToCompare!.file1!.user +" "+ new Date(dataToCompare!.file1!.lastModified).toLocaleString()}
+rightTitle= {dataToCompare!.file2!.user +" "+ new Date(dataToCompare!.file2!.lastModified).toLocaleString()}
+/>
+</>
+}
               </>
               }
             </ModalBody>
