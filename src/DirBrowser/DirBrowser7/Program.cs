@@ -1,12 +1,8 @@
-using Microsoft.AspNetCore.Server.HttpSys;
-using Microsoft.Extensions.Options;
-using System.Runtime.InteropServices;
-using System.ServiceProcess;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddShortUrl();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddApiVersioning();
@@ -93,11 +89,12 @@ app.UseCors("AllowAll");
 
 app.UseAuthorization();
 app.UseAuthentication();
-
+app.UseShortUrl();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseDirs(app.Configuration);
 app.MapControllers().RequireAuthorization();
+app.MapShortUrlEndpoints();
 app.UseBlocklyUI(app.Environment);
 app.UseBlocklyAutomation();
 app.MapUsefullAll();

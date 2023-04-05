@@ -6,12 +6,12 @@ import { useParams } from 'react-router-dom';
 import { FolderToRead } from './genericFiles/FolderToRead';
 import DisplayFoldersAndFiles from './justDisplayGUI/displayFoldersAndFiles';
 import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
+import { useEffect } from 'react';
   
 
   export default function DisplayFiles(){
 
     const { ...id } = useParams();
-
     var root='';
     if(id["*"])
       root= id["*"].toString();
@@ -23,7 +23,14 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
     var key= 'root '+root;
     
     
-
+    const AddLocations=()=> {
+      var loc=window.location.href;
+      fetch(''+process.env.REACT_APP_URL+'short/add/auth/'+loc,{
+        method: 'GET',
+        credentials: 'include' 
+      }).then(it=>it).catch(err=>console.log('err',err));
+    };
+    
     const fetchFolders = (): Promise<FolderToRead[]> =>
     fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetRootFolders',
     {
@@ -46,7 +53,11 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
         queryKey: [key],
         queryFn: (root.length===0)? fetchFolders: fetchFoldersFromFolder
       })
-    
+    // eslint-disable-next-line no-empty-pattern
+    const { }=useQuery({
+      queryKey: ['add'+ key],
+      queryFn: AddLocations
+    });
       if (isLoading) return <>'Loading...'</>
     
       if (error) return <>'An error has occurred: ' + JSON.stringify(error)</>
