@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import { FolderToRead } from './genericFiles/FolderToRead';
 import DisplayFoldersAndFiles from './justDisplayGUI/displayFoldersAndFiles';
 import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
-import { useEffect } from 'react';
   
 
   export default function DisplayFiles(){
