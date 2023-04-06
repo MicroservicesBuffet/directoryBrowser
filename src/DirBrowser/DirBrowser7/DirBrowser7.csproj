@@ -31,6 +31,6 @@
 		<PackageReference Include="AMSWebAPI" Version="2022.5.25.1154" />
 		<PackageReference Include="AMS_Base" Version="2022.5.25.1154" />
 		<PackageReference Include="RSCG_AMS" Version="2022.5.25.1154" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-		<PackageReference Include="NetCore7ShortLinks" Version="7.2023.505.2320" />
+		<PackageReference Include="NetCore7ShortLinks" Version="7.2023.506.10" />
 	</ItemGroup>
 </Project>

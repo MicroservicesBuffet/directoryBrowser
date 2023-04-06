@@ -18,7 +18,7 @@ import { historyData } from "./genericFiles/historyData";
 
 export const App = () => {
 
-  const [historyData,setHistoryData]=useState<historyData[]>([]);
+  const [historyData,setHistoryData]=useState<Partial<historyData>[]>([]);
   const [userName,setUserName]=useState("  please wait");
   const obtainUser=(): Promise<any>=>
     fetch(''+process.env.REACT_APP_URL+'api/usefull/user/authorization', 
@@ -55,9 +55,13 @@ export const App = () => {
     .catch(err=>console.log('err',err));
   ;
 const loadHistory=() =>{
+  setHistoryData([{url:'loading',createdDate:new Date()}]);
   lastDataPromise().then(it=> {
-    var sortData=it.sort((a,b)=>a.createdDate>b.createdDate?-1:1);
+    var sortData=it.sort((a,b)=>a.lastAccessedDate>b.lastAccessedDate?-1:1);
     setHistoryData(sortData.slice(0,10));
+  }).catch(err=>{
+    setHistoryData([{url:'error',createdDate:new Date()}]);
+    console.log('err',err);
   });
 }
 return (
@@ -79,7 +83,7 @@ return (
   <MenuList>
     {historyData.map(it=>
     <>
-      <MenuItem><Link to={it.url}>{it.url}</Link></MenuItem>
+      <MenuItem><Link to={it.url||''}>{it.url}</Link></MenuItem>
     </>
     )}
   </MenuList>

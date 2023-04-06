@@ -3,7 +3,7 @@ export interface historyData {
     userName: string,
     url: string
     shortUrl: string
-    createdDate: string
-    lastAccessedDate: string
+    createdDate: Date
+    lastAccessedDate: Date
     fullUrl: string
   }
