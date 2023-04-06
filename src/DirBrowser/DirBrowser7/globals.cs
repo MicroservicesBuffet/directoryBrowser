@@ -12,5 +12,7 @@ global using UsefullExtensions;
 global using Microsoft.AspNetCore.Server.HttpSys;
 global using NetCoreShortLinks;
 global using System.Runtime.InteropServices;
+global using McMaster.NETCore.Plugins;
+global using IPluginDirBrowser;
 
 [assembly: VersionReleased(Name = "FutureRelease", ISODateTime = "9999-04-16", recordData = AMS_Base.RecordData.Merges)]

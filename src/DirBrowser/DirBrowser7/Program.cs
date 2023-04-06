@@ -1,4 +1,13 @@
 
+foreach(var item in Directory.GetDirectories("plugins"))
+{
+    var nameDir = Path.GetDirectoryName(item);
+    PluginLoader.CreateFromAssemblyFile(
+        assemblyFile: $"./plugins/{nameDir}/{nameDir}.dll",
+        sharedTypes: new[] { typeof(ISaveFile<>), typeof(IServiceCollection), typeof(ILogger) },
+        isUnloadable: true);
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
