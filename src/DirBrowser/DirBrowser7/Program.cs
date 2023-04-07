@@ -1,13 +1,5 @@
 
-foreach(var item in Directory.GetDirectories("plugins"))
-{
-    var nameDir = Path.GetDirectoryName(item);
-    PluginLoader.CreateFromAssemblyFile(
-        assemblyFile: $"./plugins/{nameDir}/{nameDir}.dll",
-        sharedTypes: new[] { typeof(ISaveFile<>), typeof(IServiceCollection), typeof(ILogger) },
-        isUnloadable: true);
-}
-
+var plugins = LoadPlugins().ToArray();
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -30,6 +22,7 @@ builder.Services.AddCors(opt =>
                       .AllowAnyHeader()
                       .AllowCredentials());
 });
+
 //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
 //   .AddNegotiate();
 
@@ -108,6 +101,47 @@ app.UseBlocklyUI(app.Environment);
 app.UseBlocklyAutomation();
 app.MapUsefullAll();
 app.UseAMS();
-
+app.MapGet("/plugins/names", (HttpContext ctx) =>
+{
+    var names = plugins.Select(it => it.GetName()).ToArray();
+    ctx.Response.WriteAsJsonAsync(names);
+});
 app.MapFallbackToFile("/show/{**slug:nonfile}", "index.html");
 await app.RunAsync(UsefullExtensions.UsefullExtensions.cts.Token);
+
+IEnumerable<ISaveFile> LoadPlugins()
+{
+
+    var loaders = new List<PluginLoader>();
+
+    // create plugin loaders
+    var pluginsDir = Path.Combine(AppContext.BaseDirectory, "plugins");
+    foreach (var dir in Directory.GetDirectories(pluginsDir))
+    {
+        var dirName = Path.GetFileName(dir);
+        var pluginDll = Path.Combine(dir, dirName + ".dll");
+        if (File.Exists(pluginDll))
+        {
+            var loader = PluginLoader.CreateFromAssemblyFile(
+                pluginDll,
+                sharedTypes: new[] { typeof(ISaveFile), typeof(ILogger) });
+            loaders.Add(loader);
+        }
+    }
+
+    // Create an instance of plugin types
+    foreach (var loader in loaders)
+    {
+        foreach (var pluginType in loader
+            .LoadDefaultAssembly()
+            .GetTypes()
+            .Where(t => typeof(ISaveFile).IsAssignableFrom(t) && !t.IsAbstract))
+        {
+            // This assumes the implementation of IPlugin has a parameterless constructor
+            ISaveFile? plugin = Activator.CreateInstance(pluginType) as ISaveFile;
+            //Console.WriteLine($"Created plugin instance '{plugin.GetName()}'.");
+            if (plugin != null)
+                yield return plugin;
+        }
+    }
+}

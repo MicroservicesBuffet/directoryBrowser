@@ -1,7 +1,8 @@
 ﻿namespace IPluginDirBrowser;
 
-public interface ISaveFile<T>
+public interface ISaveFile
 {
+    public string GetName();
     public Task<bool> Save(string user,string nameFile,string prevFileContent,string actFileContent);
-    public Task<bool> GetSettings(T settings); 
+    public Task<bool> SetSettings(string settings); 
 }

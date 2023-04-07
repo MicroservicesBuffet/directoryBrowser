@@ -3,17 +3,19 @@ using IPluginDirBrowser;
 using System.Net.Mail;
 
 namespace EmailPlugin;
-public class EmailSender : ISaveFile<EmailSettings>
+public class EmailSender : ISaveFile
 {
-    private EmailSettings settings;
-    public async Task<bool> GetSettings(EmailSettings settings)
+    private EmailSettings? settings;
+    public  Task<bool> SetSettings(string settings)
     {
-        this.settings = settings;
-        return true;
+        
+        this.settings = System.Text.Json.JsonSerializer.Deserialize<EmailSettings>(settings);
+        return Task.FromResult(true);
     }
 
     public async Task<bool> Save(string user, string nameFile, string prevFileContent, string actFileContent)
     {
+        ArgumentNullException.ThrowIfNull(settings);
         await Task.Delay(1000);
         var mm = new MailMessage(settings.To ?? "", settings.From ?? "");
         mm.Subject = $"Changed {nameFile} by {user}";
@@ -31,5 +33,11 @@ public class EmailSender : ISaveFile<EmailSettings>
         
         smtpClient.Send(mm);
         return true;
+    }
+
+    public string GetName()
+    {
+        var type = this.GetType();
+        return type.AssemblyQualifiedName?? type.Name;
     }
 }
