@@ -29,12 +29,12 @@ public class FileController : ControllerBase
         return await fo.GetFileText(path,folders);
     }
     [HttpPost]
-    public async Task<int> SetFileText([FromBody] SaveTextFile save, [FromServices] FolderToRead[] folders)
+    public async Task<int> SetFileText([FromBody] SaveTextFile save, [FromServices] FolderToRead[] folders, [FromServices] ISaveFile[] plugins )
     {
         await Task.Delay(1000);
         
         var user = this.User?.Identity?.Name??"no auth user";
-        return await fo.SetFileText(user,save, folders);
+        return await fo.SetFileText(user,save, folders, plugins);
     }
     [HttpGet]
     public async Task<FolderToRead[]> GetRootFolders([FromServices] FolderToRead[] folders)

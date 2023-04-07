@@ -1,15 +1,28 @@
 ﻿
 using IPluginDirBrowser;
 using System.Net.Mail;
+using System.Text.Json;
 
 namespace EmailPlugin;
 public class EmailSender : ISaveFile
 {
-    private EmailSettings? settings;
+    private EmailSettings settings=new();
     public  Task<bool> SetSettings(string settings)
     {
-        
-        this.settings = System.Text.Json.JsonSerializer.Deserialize<EmailSettings>(settings);
+        var dict = JsonSerializer.Deserialize<Dictionary<string,string>>(settings);
+        ArgumentNullException.ThrowIfNull(dict);
+        var name=GetName();
+        this.settings.To = dict[$"{name}:To"];
+        this.settings.From = dict[$"{name}:From"];
+        this.settings.Host = dict[$"{name}:Host"];
+        this.settings.UseDefaultCredentials =bool.Parse( dict[$"{name}:UseDefaultCredentials"]);
+        var port= dict[$"{name}:Port"];
+        if(port != null)
+        {
+            this.settings.Port = int.Parse(port);
+        }
+
+
         return Task.FromResult(true);
     }
 
@@ -38,6 +51,6 @@ public class EmailSender : ISaveFile
     public string GetName()
     {
         var type = this.GetType();
-        return type.AssemblyQualifiedName?? type.Name;
+        return type.Name;
     }
 }

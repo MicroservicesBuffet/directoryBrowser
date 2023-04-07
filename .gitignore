@@ -348,3 +348,4 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+src/DirBrowser/DirBrowser7/plugins/EmailPlugin/

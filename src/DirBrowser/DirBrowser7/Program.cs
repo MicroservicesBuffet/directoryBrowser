@@ -74,8 +74,19 @@ if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         options.Authentication.AllowAnonymous = true;
     });
 }
+builder.Services.AddSingleton(plugins);
 var app = builder.Build();
 
+foreach(var item in plugins)
+{
+    var config = builder.Configuration.GetRequiredSection(item.GetName())!;
+    ArgumentNullException.ThrowIfNull(config);
+    var dict = config.AsEnumerable().ToDictionary(it => it.Key, it => it.Value);
+    ArgumentNullException.ThrowIfNull(dict);
+    var data=System.Text.Json.JsonSerializer.Serialize(dict);
+    ArgumentNullException.ThrowIfNullOrEmpty(data);
+    await item.SetSettings(data);
+}
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 {

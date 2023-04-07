@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IPluginDirBrowser;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,11 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DirBrowserBL;
-public class SaveTextFile
-{
-    public string? pathFile { get; set; }
-    public string? content { get; set; }
-}
 
 
 public class FileOperations
@@ -35,16 +31,32 @@ public class FileOperations
         var file = FullPathFile(path, folders);
         return await System.IO.File.ReadAllTextAsync(file);
     }
-    public async Task<int> SetFileText(string user, SaveTextFile save, FolderToRead[] folders)
+    public async Task<int> SetFileText(string user, SaveTextFile save, FolderToRead[] folders, params ISaveFile[] plugins)
     {
         
         var file = FullPathFile(save.pathFile ?? "", folders);
+        var oldFileContents = await System.IO.File.ReadAllTextAsync(file);
         await System.IO.File.WriteAllTextAsync(file, save.content ?? "");
         var fld = new FolderToRead(new FileInfo(file),save.pathFile??"");
         IFileHistory fileHistory = fld;
         fileHistory.Content =(save.content??" ");
         fileHistory.User = user;
         await historyFileString.AddHistory(fileHistory);
+        if (plugins?.Count() > 0)
+        {
+            foreach (var item in plugins)
+            {
+                try
+                {
+                    await item.Save(user, file, oldFileContents, save.content??"");
+                }
+                catch(Exception)
+                {
+                    //maybe log?
+                    throw;
+                }
+            }
+        }
         return (save.content ?? "").Length;
     }
     public async Task<IFileHistory?> GetFileContents(long id)

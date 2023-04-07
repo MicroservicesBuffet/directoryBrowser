@@ -5,7 +5,7 @@
 	  <Nullable>enable</Nullable>
   </PropertyGroup>
 
-	<PropertyGroup >
+	<PropertyGroup>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 	</PropertyGroup>
 
@@ -26,5 +26,8 @@
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="SourceItemType" />
     <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="Name" />
     <AdditionalFiles Include="RenderStartFolders.txt" SourceItemType="Transplate" KeepMetadata="Name" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IPluginDirBrowser\IPluginDirBrowser.csproj" />
   </ItemGroup>
 </Project>
