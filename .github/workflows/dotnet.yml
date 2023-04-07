@@ -63,12 +63,11 @@ jobs:
     - name: dotnet publish artifacts
       run: |
         cd src
-        cd DirBrowser
-        cd DirBrowser7
+        cd DirBrowser        
         dotnet build -c Debug
         #dotnet publish -r win-x64 -c Debug -o myappArtifact  --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=true
         dotnet r publishFull
-        dir myappArtifact 
+        #dir myappArtifact 
 
   
     - name: 'Upload Artifact'
