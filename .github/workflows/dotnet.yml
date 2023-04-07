@@ -51,27 +51,20 @@ jobs:
         cd DirBrowser
         dotnet restore
         dotnet tool restore
+        echo 'build plugins'
         dotnet r buildPlugins
 
     - name: dotnet build
       run: |
         cd src
         cd DirBrowser
-        dotnet build --configuration Release
-
-    - name: test
-      env: # Or as an environment variable
-        PWDGMAIL: ${{ secrets.PWDGMAIL }}
-      run: |
-        cd src
-        cd DirBrowser
+        dotnet build 
 
     - name: dotnet publish artifacts
       run: |
         cd src
         cd DirBrowser
         cd DirBrowser7
-        dotnet tool restore
         dotnet publish -r win-x64 -c Release -o myappArtifact  --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=true
         dir myappArtifact 
 
