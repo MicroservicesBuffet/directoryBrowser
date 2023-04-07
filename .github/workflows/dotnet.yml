@@ -58,14 +58,15 @@ jobs:
       run: |
         cd src
         cd DirBrowser
-        dotnet build 
+        dotnet build -c Debug
 
     - name: dotnet publish artifacts
       run: |
         cd src
         cd DirBrowser
         cd DirBrowser7
-        dotnet publish -r win-x64 -c Release -o myappArtifact  --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=true
+        dotnet build -c Debug
+        dotnet publish -r win-x64 -c Debug -o myappArtifact  --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=true
         dir myappArtifact 
 
   

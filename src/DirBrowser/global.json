@@ -1,10 +1,14 @@
 {
   "scriptShell": "pwsh", // Optional
   "scripts": {
-    "build": "dotnet build DirBrowser7/DirBrowser7.csproj ",
+	"publish":"dotnet publish DirBrowser7/DirBrowser7.csproj -r win-x64 -c Debug -o myappArtifact  --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=true",       
+    "build": "dotnet build -c Debug DirBrowser7/DirBrowser7.csproj ",
     "test": "dotnet test ",
     "ci": "dotnet r build && dotnet r test",
-	"buildPlugins":"dotnet build EmailPlugin/EmailPlugin.csproj -o DirBrowser7/plugins/EmailPlugin",
-  	"runFull":"dotnet r buildPlugins && dotnet r build && dotnet run --project DirBrowser7/DirBrowser7.csproj"
+	"buildPlugins":"dotnet build -c debug EmailPlugin/EmailPlugin.csproj -o DirBrowser7/plugins/EmailPlugin",
+  	"runFull":"dotnet r buildPlugins && dotnet r build && dotnet run --project DirBrowser7/DirBrowser7.csproj",
+	"publishPlugins":"dotnet build -c debug EmailPlugin/EmailPlugin.csproj -o myappArtifact/plugins/EmailPlugin",
+  
+	"publishFull":"dotnet r buildPlugins && dotnet r build && dotnet r publish && dotnet r publishPlugins"
   }
 }
