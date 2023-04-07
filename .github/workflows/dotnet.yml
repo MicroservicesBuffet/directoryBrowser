@@ -81,13 +81,13 @@ jobs:
       with:
         type: 'zip'
         filename: 'releaseWinX64.zip'
-        path: '${{github.workspace}}/src/DirBrowser/DirBrowser7/myappArtifact/*'
+        path: '${{github.workspace}}/src/DirBrowser/myappArtifact/*'
         directory: '${{github.workspace}}/'
         exclusions: '*.git* /*node_modules/* .editorconfig'       
 
     - name: Release
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
+      #if: startsWith(github.ref, 'refs/tags/')
       with:
         body: "Latest Release for Manual Install"
         generate_release_notes: true
