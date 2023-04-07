@@ -71,7 +71,7 @@ if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         options.Authentication.Schemes =
             AuthenticationSchemes.NTLM |
             AuthenticationSchemes.Negotiate;
-        options.Authentication.AllowAnonymous = true;
+        options.Authentication.AllowAnonymous = false;
     });
 }
 builder.Services.AddSingleton(plugins);
