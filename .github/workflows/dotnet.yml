@@ -45,18 +45,14 @@ jobs:
         rm ../DirBrowser7/wwwroot/help/default.html
         cp -r build/* ../DirBrowser7/wwwroot/help/    
 
-    - name: prepare tools
-      run: |
-        cd src
-        cd DirBrowser
-        dotnet tool restore
-
-    - name: dotnet restore
+    - name: prepare plugins
       run: |
         cd src
         cd DirBrowser
         dotnet restore
-        
+        dotnet tool restore
+        dotnet r buildPlugins
+
     - name: dotnet build
       run: |
         cd src
@@ -75,6 +71,7 @@ jobs:
         cd src
         cd DirBrowser
         cd DirBrowser7
+        dotnet tool restore
         dotnet publish -r win-x64 -c Release -o myappArtifact  --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=true
         dir myappArtifact 
 
