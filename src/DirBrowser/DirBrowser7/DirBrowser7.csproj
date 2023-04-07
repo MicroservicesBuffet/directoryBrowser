@@ -10,6 +10,16 @@
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="plugins\**\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="plugins\**\">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
