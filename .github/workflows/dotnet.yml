@@ -95,8 +95,8 @@ jobs:
         prerelease: false
         files:  |
             ${{github.workspace}}/releaseWinX64.zip
-        # tag: v${{ env.GITHUB_SHA }}
-        # tag_name: v${{ env.GITHUB_SHA }}
+        tag: v${{ env.GITHUB_SHA }}
+        tag_name: v${{ env.GITHUB_SHA }}
         
 
     - name: delete older-releases@v0
