@@ -66,7 +66,8 @@ jobs:
         cd DirBrowser
         cd DirBrowser7
         dotnet build -c Debug
-        dotnet publish -r win-x64 -c Debug -o myappArtifact  --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=true
+        #dotnet publish -r win-x64 -c Debug -o myappArtifact  --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=true
+        dotnet r publishFull
         dir myappArtifact 
 
   
@@ -74,7 +75,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: DirBrowser7_Win64
-        path: 'src/DirBrowser/DirBrowser7/myappArtifact'
+        path: 'src/DirBrowser/myappArtifact'
 
     - name: Archive Release  
       uses: thedoctor0/zip-release@master
