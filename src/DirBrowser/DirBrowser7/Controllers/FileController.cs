@@ -10,9 +10,9 @@ namespace DirBrowser7.Controllers;
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
 public class FileController : ControllerBase
 {
-    private readonly FileOperations fo;
+    private readonly IFileOperations fo;
 
-    public FileController(FileOperations fo, IHistoryFileString historyFileString)
+    public FileController(IFileOperations fo)
     {
         this.fo = fo;
     }

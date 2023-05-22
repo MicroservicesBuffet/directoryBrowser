@@ -14,4 +14,5 @@ global using System.Text.Encodings.Web;
 global using Microsoft.AspNetCore.Builder;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
-
+global using IPluginDirBrowser;
+global using System.IO;

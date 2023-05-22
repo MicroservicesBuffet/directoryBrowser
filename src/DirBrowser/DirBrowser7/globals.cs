@@ -15,4 +15,4 @@ global using System.Runtime.InteropServices;
 global using McMaster.NETCore.Plugins;
 global using IPluginDirBrowser;
 
-[assembly: VersionReleased(Name = "FutureRelease", ISODateTime = "9999-04-16", recordData = AMS_Base.RecordData.Merges)]
+[assembly: VersionReleased(Name = "FirstRelease", ISODateTime = "2023-04-16", recordData = AMS_Base.RecordData.Merges)]

@@ -28,7 +28,7 @@ public class Metadata : ControllerBase
         return true;
     }
     [HttpPost]
-    public async Task<long> AddAllFilesToDB([FromServices] FileOperations fo ,[FromServices] FolderToRead[] fld)
+    public async Task<long> AddAllFilesToDB([FromServices] IFileOperations fo ,[FromServices] FolderToRead[] fld)
     {
         long nr = 0;
         foreach (var item in fld)
@@ -37,7 +37,7 @@ public class Metadata : ControllerBase
         }
         return nr;
     }
-    private async Task<long> AddFolderRecursive(FileOperations fo,string path, FolderToRead[] fld)
+    private async Task<long> AddFolderRecursive(IFileOperations fo,string path, FolderToRead[] fld)
     {
         long nr = 0;
         foreach(var item in fo.GetFolderContent(path, fld))

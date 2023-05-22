@@ -1,12 +1,4 @@
-﻿using DirBrowserBL;
-using Generated;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
-using System.Text;
-using System.Text.Unicode;
-
-
-namespace BrowserHistory;
+﻿namespace BrowserHistory;
 
 public class HistoryFileString : IHistoryFileString
 {

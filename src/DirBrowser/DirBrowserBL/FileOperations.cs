@@ -1,15 +1,9 @@
-﻿using IPluginDirBrowser;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace DirBrowserBL;
 
 
-public class FileOperations
+public class FileOperations : IFileOperations
 {
     private readonly IHistoryFileString historyFileString;
 
@@ -22,24 +16,24 @@ public class FileOperations
     {
 
         var file = FullPathFile(path, folders);
-        var fld = new FolderToRead(new FileInfo(file),path);
+        var fld = new FolderToRead(new FileInfo(file), path);
         return await historyFileString.History(fld);
     }
-    public async Task<string> GetFileText(string path,  FolderToRead[] folders)
+    public async Task<string> GetFileText(string path, FolderToRead[] folders)
     {
-        
+
         var file = FullPathFile(path, folders);
         return await System.IO.File.ReadAllTextAsync(file);
     }
     public async Task<int> SetFileText(string user, SaveTextFile save, FolderToRead[] folders, params ISaveFile[] plugins)
     {
-        
+
         var file = FullPathFile(save.pathFile ?? "", folders);
         var oldFileContents = await System.IO.File.ReadAllTextAsync(file);
         await System.IO.File.WriteAllTextAsync(file, save.content ?? "");
-        var fld = new FolderToRead(new FileInfo(file),save.pathFile??"");
+        var fld = new FolderToRead(new FileInfo(file), save.pathFile ?? "");
         IFileHistory fileHistory = fld;
-        fileHistory.Content =(save.content??" ");
+        fileHistory.Content = (save.content ?? " ");
         fileHistory.User = user;
         await historyFileString.AddHistory(fileHistory);
         if (plugins?.Count() > 0)
@@ -48,9 +42,9 @@ public class FileOperations
             {
                 try
                 {
-                    await item.Save(user, file, oldFileContents, save.content??"");
+                    await item.Save(user, file, oldFileContents, save.content ?? "");
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     //maybe log?
                     throw;
@@ -65,7 +59,7 @@ public class FileOperations
 
     }
 
-    public string FullPathFile(string path,  FolderToRead[] folders)
+    public string FullPathFile(string path, FolderToRead[] folders)
     {
         var f = GetFirstFolder(path, folders);
         var str = path.Split("/", StringSplitOptions.RemoveEmptyEntries);
@@ -105,7 +99,7 @@ public class FileOperations
     }
     public bool IsFolder(string path, FolderToRead[] folders)
     {
-        
+
         try
         {
             var di = FolderFromContent(path, folders);
@@ -116,7 +110,7 @@ public class FileOperations
             return false;
         }
     }
-    static DirectoryInfo FolderFromContent(string path, FolderToRead[] folders)
+    public static DirectoryInfo FolderFromContent(string path, FolderToRead[] folders)
     {
         var f = GetFirstFolder(path, folders);
         var str = path.Split("/", StringSplitOptions.RemoveEmptyEntries);
@@ -132,14 +126,14 @@ public class FileOperations
         var di = new DirectoryInfo(pathFull);
         return di;
     }
-    
-    public FolderToRead[] GetFolderContent(string path,  FolderToRead[] folders)
+
+    public FolderToRead[] GetFolderContent(string path, FolderToRead[] folders)
     {
-        
+
         var di = FolderFromContent(path, folders);
         var files = di.EnumerateFiles().ToArray().Select(it => new FolderToRead(it, path)).ToArray();
         var dirs = di.EnumerateDirectories().ToArray().Select(it => new FolderToRead(it, path)).ToArray();
-        
+
         List<FolderToRead> ret = new();
         if (dirs.Length > 0)
             ret.AddRange(dirs);

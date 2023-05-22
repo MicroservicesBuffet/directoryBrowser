@@ -10,9 +10,11 @@ builder.Services.AddApiVersioning();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterFolders();
-builder.Services.AddTransient<FileOperations>();
+builder.Services.AddTransient<IFileOperations,FileOperations>();
 builder.Services.AddTransient<IHistoryFileString, HistoryFileString>();
 builder.Services.AddTransient<ISearchDataModifiedUserFile, SearchDataModifiedUserFile>();
+builder.Services.AddTransient<ISearchDataModifiedFile, SearchDataModifiedFile>();
+builder.Services.AddTransient<IFileSearch, FileSearch>();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("AllowAll",
