@@ -1,32 +1,41 @@
-﻿using DirBrowserBL;
-using Generated;
-using Microsoft.Extensions.FileProviders;
-using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace BrowserHistory;
 
 public class FileSearch : IFileSearch
 {
-    private readonly ISearchDataModifiedFile context;
+    private readonly ApplicationDBContext context;
     private readonly FolderToRead[] folders;
 
-    public FileSearch(ISearchDataModifiedFile context, FolderToRead[] folders)
+    public FileSearch(ApplicationDBContext context, FolderToRead[] folders)
     {
         this.context = context;
         this.folders = folders;
     }
-    public async Task<IFileInfo[]> SearchFiles(string startFolder, string nameFile)
+    public async Task<IFileInfo[]> SearchFiles(string startFolder, string contentLine)
     {
+         
+
+        var data = 
+            context.Database.SqlQuery<ModifiedUserFile_Table>($@"select muf.* from 
+(SELECT max(id) as id
+  FROM [ModifiedUserFile]
+  group by IDFile 
+)  a 
+  inner join [ModifiedUserFile] muf on muf.id = a.id
+  where muf.Contents like '%{contentLine}%'
+").ToArrayAsync();
         
+                
         var lst=new List<IFileInfo>();
-        await foreach(var item in context.ModifiedFileSimpleSearch_FullPathFile(GeneratorFromDB.SearchCriteria.StartsWith, startFolder))
+        foreach(var item in data)
         {
-            if (item.FullPathFile.EndsWith(nameFile, StringComparison.InvariantCultureIgnoreCase))
+            var pathFile = item.IDFileNavigation.FullPathFile;
+            if (pathFile.StartsWith(contentLine, StringComparison.InvariantCultureIgnoreCase))
             {
-                if (File.Exists(item.FullPathFile))
-                {
-                    
-                    var file = new FileInfo(item.FullPathFile);
+                if (File.Exists(pathFile))
+                {                    
+                    var file = new FileInfo(pathFile);
                     ArgumentNullException.ThrowIfNull(file);
                     var fld = new FolderToRead(file,startFolder);
                     lst.Add(fld);
