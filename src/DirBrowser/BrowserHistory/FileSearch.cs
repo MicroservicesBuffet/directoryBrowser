@@ -12,36 +12,42 @@ public class FileSearch : IFileSearch
         this.context = context;
         this.folders = folders;
     }
-    public async Task<IFileInfo[]> SearchFiles(string startFolder, string contentLine)
+    public async Task<IFileInfo[]> SearchFiles(string contentLine, string startFolder)
     {
          
-
+        //do not move sql
+        // or sqlinjection will appear
         var data = 
-            context.Database.SqlQuery<ModifiedUserFile_Table>($@"select muf.* from 
+            await context.ModifiedUserFile.FromSqlInterpolated($@"
+select muf.* from 
 (SELECT max(id) as id
   FROM [ModifiedUserFile]
   group by IDFile 
 )  a 
   inner join [ModifiedUserFile] muf on muf.id = a.id
-  where muf.Contents like '%{contentLine}%'
-").ToArrayAsync();
+  [ModifiedFile] mf on mf.IDFile = muf.IDFile
+  where 
+mf.FullPathFile like '{startFolder}%' and
+muf.Contents like '%{contentLine}%'
+    
+")
+            .Include(muf=>muf.IDFileNavigation)
+            .AsNoTracking()
+            .ToArrayAsync();
         
                 
         var lst=new List<IFileInfo>();
-        foreach(var item in data)
+        foreach (var item in data)
         {
             var pathFile = item.IDFileNavigation.FullPathFile;
-            if (pathFile.StartsWith(contentLine, StringComparison.InvariantCultureIgnoreCase))
+            if (File.Exists(pathFile))
             {
-                if (File.Exists(pathFile))
-                {                    
-                    var file = new FileInfo(pathFile);
-                    ArgumentNullException.ThrowIfNull(file);
-                    var fld = new FolderToRead(file,startFolder);
-                    lst.Add(fld);
-                }
-
+                var file = new FileInfo(pathFile);
+                ArgumentNullException.ThrowIfNull(file);
+                var fld = new FolderToRead(file, startFolder);
+                lst.Add(fld);
             }
+
         }
         return lst.ToArray();
     }

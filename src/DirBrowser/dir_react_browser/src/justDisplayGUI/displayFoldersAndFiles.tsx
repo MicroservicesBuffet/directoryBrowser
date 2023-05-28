@@ -19,9 +19,17 @@ export default function DisplayFoldersAndFiles(
       var url =''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileContent/';
       window.open(url+folderParent+'/'+path);
     }
+    const showSearch=(folderParentToDisplay:string)=>{
+      window.alert(folderParentToDisplay);
+      //see showSearch.tsx
+    }
+
 
     return <>
-    
+<div>
+<Button onClick={()=>showSearch(folderParent)} colorScheme='blue'>Search files on {folderParent}</Button>
+</div>   
+<div>
     <TableContainer>
   <Table variant='striped'>
     <TableCaption>{(folderParent.length>0) && <> Content of {folderParent}</>}</TableCaption>
@@ -87,7 +95,7 @@ export default function DisplayFoldersAndFiles(
     </Tfoot>
   </Table>
 </TableContainer>
-
+</div>
 
     </>
 }

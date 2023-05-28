@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Generated;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using System.Text;
 
 namespace DirBrowser7.Controllers;
@@ -81,5 +82,11 @@ public class FileController : ControllerBase
 
         var s = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.Equal, eModifiedUserFileColumns.IDFile, id.ToString());
         return await search.GetAllCount(s);       
+    }
+
+    [HttpGet("{contentLine}/{*startFolder}")]
+    public async Task<IFileInfo[]> SearchFiles(string contentLine, string startFolder, [FromServices] IFileSearch search)
+    {
+        return await search.SearchFiles(contentLine, startFolder);
     }
 }
