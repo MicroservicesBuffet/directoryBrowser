@@ -16,7 +16,7 @@ public class FileSearch : IFileSearch
     {
          
 
-        var data = 
+        var data = await
             context.Database.SqlQuery<ModifiedUserFile_Table>($@"select muf.* from 
 (SELECT max(id) as id
   FROM [ModifiedUserFile]
@@ -30,18 +30,18 @@ public class FileSearch : IFileSearch
         var lst=new List<IFileInfo>();
         foreach(var item in data)
         {
-            var pathFile = item.IDFileNavigation.FullPathFile;
-            if (pathFile.StartsWith(contentLine, StringComparison.InvariantCultureIgnoreCase))
-            {
-                if (File.Exists(pathFile))
-                {                    
-                    var file = new FileInfo(pathFile);
-                    ArgumentNullException.ThrowIfNull(file);
-                    var fld = new FolderToRead(file,startFolder);
-                    lst.Add(fld);
-                }
+            //var pathFile = item.IDFileNavigation.FullPathFile;
+            //if (pathFile.StartsWith(contentLine, StringComparison.InvariantCultureIgnoreCase))
+            //{
+            //    if (File.Exists(pathFile))
+            //    {                    
+            //        var file = new FileInfo(pathFile);
+            //        ArgumentNullException.ThrowIfNull(file);
+            //        var fld = new FolderToRead(file,startFolder);
+            //        lst.Add(fld);
+            //    }
 
-            }
+            //}
         }
         return lst.ToArray();
     }
