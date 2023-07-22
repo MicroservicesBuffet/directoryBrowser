@@ -116,7 +116,7 @@ jobs:
          cd src
          cd DirBrowser
          cd DirBrowser7
-         Remove-Item -Recurse -Force myappArtifact 
+         #Remove-Item -Recurse -Force myappArtifact 
 
 
     - name: dotnet publish for azure
