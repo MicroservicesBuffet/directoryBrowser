@@ -4,6 +4,7 @@ namespace DirBrowserBL;
 public class FolderToRead : IFileInfo, IFileHistory
 {
     public bool Enabled { get; set; } = true;
+    public string SearchForFiles { get; set; } = "";
     public FolderToRead()
     {
         Id = "";

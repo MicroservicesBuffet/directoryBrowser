@@ -129,9 +129,11 @@ public class FileOperations : IFileOperations
 
     public FolderToRead[] GetFolderContent(string path, FolderToRead[] folders)
     {
-
+        var fld = GetFirstFolder(path, folders);
+        
         var di = FolderFromContent(path, folders);
-        var files = di.EnumerateFiles().ToArray().Select(it => new FolderToRead(it, path)).ToArray();
+        var filesEnum = string.IsNullOrWhiteSpace(fld.SearchForFiles) ? di.EnumerateFiles() : di.EnumerateFiles(fld.SearchForFiles);
+        var files = filesEnum.ToArray().Select(it => new FolderToRead(it, path)).ToArray();
         var dirs = di.EnumerateDirectories().ToArray().Select(it => new FolderToRead(it, path)).ToArray();
 
         List<FolderToRead> ret = new();

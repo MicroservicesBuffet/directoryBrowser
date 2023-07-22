@@ -129,6 +129,7 @@ IEnumerable<ISaveFile> LoadPlugins()
 
     // create plugin loaders
     var pluginsDir = Path.Combine(AppContext.BaseDirectory, "plugins");
+    if(Directory.Exists(pluginsDir))
     foreach (var dir in Directory.GetDirectories(pluginsDir))
     {
         var dirName = Path.GetFileName(dir);
