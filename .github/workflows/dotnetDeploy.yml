@@ -108,28 +108,28 @@ jobs:
 
 
     - name: Test
-     run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal
 
     - name: 'Delete Artifact'
-     shell: pwsh
-     run: |
-       cd src
-       cd DirBrowser
-       cd DirBrowser7
-       Remove-Item -Recurse -Force myappArtifact 
+      shell: pwsh
+      run: |
+         cd src
+         cd DirBrowser
+         cd DirBrowser7
+         Remove-Item -Recurse -Force myappArtifact 
 
 
     - name: dotnet publish for azure
-     run: |
+      run: |
        cd src
        cd DirBrowser
        cd DirBrowser7
        dotnet publish -c Release -o myapp 
        dir myapp 
-  Deploy to Azure Web apps
+  # Deploy to Azure Web apps
     - name: 'Run Azure webapp deploy action using publish profile credentials'
-     uses: azure/webapps-deploy@v2
-     with: 
+      uses: azure/webapps-deploy@v2
+      with: 
        app-name: ${{ env.AZURE_WEBAPP_NAME }} 
        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EB8E17038FCC4CF1BB35DBFDD06C1AA3  }} 
        package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
