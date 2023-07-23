@@ -8,6 +8,8 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  MenuDivider,
+  MenuGroup
 } from "@chakra-ui/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import DisplayFiles from "./DisplayFiles";
@@ -69,7 +71,7 @@ return (
   <ChakraProvider theme={theme}>
 
   <div>
-   <h1> Directory browser and editor   
+   <h1> Directory browser and editor &nbsp;   
    <Button colorScheme='teal'>
     <Link color="red"  to="/help/" target="_blank">
     Help
@@ -81,12 +83,20 @@ return (
   {userName}
   </MenuButton>
   <MenuList>
+  <MenuGroup title='MyLinks'>
     {historyData.map(it=>
     <>
       <MenuItem><Link to={it.url||''}>{it.url}</Link></MenuItem>
     </>
     )}
+    </MenuGroup>
+    <MenuDivider />
+    <MenuGroup title='Advanced'>
+      <MenuItem as='a' href={process.env.REACT_APP_URL+'BlocklyAutomation'}>Automation</MenuItem>
+      <MenuItem as='a' href={process.env.REACT_APP_URL+'swagger'}>Swagger</MenuItem>
+    </MenuGroup>
   </MenuList>
+
 </Menu>
     
 </h1>&nbsp;
@@ -101,6 +111,8 @@ return (
     </QueryClientProvider>
   </Box>
    
+  
+  
   </ChakraProvider>
   </>
 )
