@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Generated;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
@@ -37,6 +38,7 @@ public class FileController : ControllerBase
         return await fo.SetFileText(user,save, folders, plugins);
     }
     [HttpGet]
+    [AllowAnonymous]
     public async Task<FolderToRead[]> GetRootFolders([FromServices] FolderToRead[] folders)
     {
         await Task.Delay(1000);
