@@ -36,7 +36,8 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
       method: 'GET',
       credentials: 'include' 
     }).then(
-      (res) => res.json() ,
+      (res) => res.json() 
+      
     );
 
     const fetchFoldersFromFolder = (): Promise<FolderToRead[]> =>
@@ -50,7 +51,10 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
 
     const { isLoading, error, data } = useQuery({
         queryKey: [key],
-        queryFn: (root.length===0)? fetchFolders: fetchFoldersFromFolder
+        queryFn: (root.length===0)? fetchFolders: fetchFoldersFromFolder,
+        onError: (err) => {
+          window.alert('error occured when retrieving folders');
+        }
       })
     // eslint-disable-next-line no-empty-pattern
     const { }=useQuery({
@@ -59,7 +63,7 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
     });
       if (isLoading) return <>'Loading...'</>
     
-      if (error) return <>'An error has occurred: ' + JSON.stringify(error)</>
+      if (error) return <>'An error has occurred: '</>
       
 
     return <>
