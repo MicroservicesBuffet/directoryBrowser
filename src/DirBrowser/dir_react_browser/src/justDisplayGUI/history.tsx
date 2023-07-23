@@ -58,6 +58,8 @@ export default function HistoryFile({fileObject,folderParentDisplay }: PropsDisp
             fetchLines()
                 .then(it=> {
                    // console.log(it);
+                   if(!it)
+                    return;
                     var a=it.sort((a,b)=>b.dbId- a.dbId);
                    // console.log(a);
                     setData(a);

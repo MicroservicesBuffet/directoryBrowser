@@ -27,7 +27,7 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
       fetch(''+process.env.REACT_APP_URL+'short/add/auth/'+loc,{
         method: 'GET',
         credentials: 'include' 
-      }).then(it=>it).catch(err=>console.log('err',err));
+      }).then(it=>it).catch(err=>console.log('error in adding url '+loc,err));
     };
     
     const fetchFolders = (): Promise<FolderToRead[]> =>

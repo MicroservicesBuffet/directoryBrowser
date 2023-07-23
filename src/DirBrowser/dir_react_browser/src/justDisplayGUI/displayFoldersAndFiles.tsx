@@ -11,6 +11,9 @@ export default function DisplayFoldersAndFiles(
     { allData, folderParent }: PropsDisplayFoldersAndFiles
 )
 {
+    if(!allData){
+      return <>No Data</>;
+    }
     allData =allData.sort((a,b)=>a.name.localeCompare(b.name));
     const files=allData.filter(it=>!it.isDirectory);
     const dirs=allData.filter(it=>it.isDirectory);

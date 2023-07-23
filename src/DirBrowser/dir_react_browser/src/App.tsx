@@ -41,8 +41,9 @@ export const App = () => {
   
     useEffect(() => {
       obtainUser()
+      .catch(err=>console.log('err',err))
       .then(it=> {
-        setUserName(it.name);
+        setUserName(it?.name);
       });
   
   }, []);
@@ -59,6 +60,10 @@ export const App = () => {
 const loadHistory=() =>{
   setHistoryData([{url:'loading',createdDate:new Date()}]);
   lastDataPromise().then(it=> {
+    if(!it || it.length===0){
+      console.error('no data');
+      return;
+    } 
     var sortData=it.sort((a,b)=>a.lastAccessedDate>b.lastAccessedDate?-1:1);
     setHistoryData(sortData.slice(0,10));
   }).catch(err=>{
