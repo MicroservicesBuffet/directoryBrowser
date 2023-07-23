@@ -19,19 +19,26 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
+	<ItemGroup>
+		
+		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+		<PackageReference Include="AspNetCore.HealthChecks.UI" Version="6.0.5" />
+		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
+		<PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="6.0.5" />
+	</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="7.0.9" />
 	  <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.0.0" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.9" />
 	  <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.1" />
 	  <PackageReference Include="NetCore2Blockly" Version="7.2023.427.2025" />
 	  <PackageReference Include="NetCoreUsefullEndpoints" Version="7.2023.402.1715" />
 	  <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.2" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.4" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.9" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
   </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\BrowserHistory\BrowserHistory.csproj" />

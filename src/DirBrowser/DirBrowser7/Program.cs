@@ -1,4 +1,8 @@
 
+using DirBrowser7;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+
 var plugins = LoadPlugins().ToArray();
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +49,38 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     //options.UseSqlServer("Data Source=.;Initial Catalog=TestData;UId=sa;pwd=<YourStrong@Passw0rd>;TrustServerCertificate=true;");
     options.UseSqlServer(cnString);
 }
-            );
+);
+var folders = builder.Configuration.GetFoldersToRead();
+var hc = builder.Services.AddHealthChecks();
+hc
+    .AddSqlServer(cnString, name: "database SqlServer");
+
+foreach (var item in folders)
+{
+    hc.AddTypeActivatedCheck<HealthCheckFolder>(item.Id, item.FullPath);
+}
+
+    
+
+
+builder.Services
+     .AddHealthChecksUI(setup =>
+     {
+
+         var health = "/healthz";
+         //if (IsBuildFromCI)
+         //{
+         //    health = builder.Configuration["MySettings:url"] + health;
+         //}
+         setup.AddHealthCheckEndpoint("me", health);
+         setup.SetEvaluationTimeInSeconds(60);
+         //setup.SetHeaderText
+         setup.MaximumHistoryEntriesPerEndpoint(10);
+     }
+
+    )
+     .AddInMemoryStorage()
+    ;
 
 
 builder.Services.AddSingleton<MiddlewareShutdown>();
@@ -96,6 +131,16 @@ foreach(var item in plugins)
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapHealthChecks("healthz", new HealthCheckOptions
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+app.MapHealthChecksUI(setup =>
+{
+
+});
 
 app.UseExceptionHandler();
 app.UseStatusCodePages();

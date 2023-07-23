@@ -94,6 +94,9 @@ return (
     <MenuGroup title='Advanced'>
       <MenuItem as='a' href={process.env.REACT_APP_URL+'BlocklyAutomation'}>Automation</MenuItem>
       <MenuItem as='a' href={process.env.REACT_APP_URL+'swagger'}>Swagger</MenuItem>
+      <MenuItem as='a' href={process.env.REACT_APP_URL+'ams'}>Version</MenuItem>
+      <MenuItem as='a' href={process.env.REACT_APP_URL+'healthchecks-ui'}>HealthCheck</MenuItem>
+      
     </MenuGroup>
   </MenuList>
 

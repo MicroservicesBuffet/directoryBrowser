@@ -6,6 +6,22 @@ public static class Extensions
 {
     static FolderToRead[]? data;
 
+    public static FolderToRead[] GetFoldersToRead(this IConfiguration config)
+    {
+        if (data != null)
+            return data;
+        var sect = config.GetSection("FoldersToRead");
+        if (sect == null)
+            throw new ArgumentException("no section configured");
+
+        data = sect.Get<FolderToRead[]>();
+        data = data!.Where(x => x != null && x.Enabled).ToArray();
+        if ((data?.Length ?? 0) == 0)
+        {
+            throw new ArgumentException("no folders configured");
+        } 
+        return data!;
+    }
     public static IServiceCollection RegisterFolders(this IServiceCollection services)
     {
         services.AddDirectoryBrowser();
@@ -15,18 +31,8 @@ public static class Extensions
     public static IApplicationBuilder UseDirs(this IApplicationBuilder app, IConfiguration config)
     {
         var provider = new MyFileContentProviderOctet();
-        var sect = config.GetSection("FoldersToRead");
-        if(sect == null)
-            throw new ArgumentException("no section configured");
-
-        data =sect.Get<FolderToRead[]>();
-        data=data!.Where(x => x != null && x.Enabled).ToArray();  
-        if((data?.Length??0) == 0)
-        {
-            throw new ArgumentException("no folders configured");
-        }
-        
-        foreach (var item in data!)
+        var folders = GetFoldersToRead(config);
+        foreach (var item in folders)
         {
             item.RelPathFolder = item.Id;
             app.UseStaticFiles(new StaticFileOptions
