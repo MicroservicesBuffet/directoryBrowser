@@ -46,6 +46,7 @@ public class FileController : ControllerBase
     }
 
     [HttpGet("{*path}")]
+    [AllowAnonymous]
     public async Task<FileResult> GetFileContent(string path, [FromServices] FolderToRead[] folders)
     {
         await Task.Delay(1000);
@@ -54,12 +55,16 @@ public class FileController : ControllerBase
     }
     
     [HttpGet]
+    [AllowAnonymous]
     public async Task<bool> IsFolder(string path, FolderToRead[] folders)
     {
         await Task.Delay(1000);
         return fo.IsFolder(path, folders);
         
-    }[HttpGet("{*path}")]
+    }
+    
+    [HttpGet("{*path}")]
+    [AllowAnonymous]
     public async Task<FolderToRead[]> GetFolderContent(string path, [FromServices] FolderToRead[] folders)
     {
         await Task.Delay(1000);
@@ -67,6 +72,7 @@ public class FileController : ControllerBase
 
     }
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<FileResult?> GetFileHistory(long id)
     {
         await Task.Delay(1000);
@@ -78,6 +84,7 @@ public class FileController : ControllerBase
         return File(cnt, "application/octet-stream", data.User + "_" + data.LastModified.ToString("yyyyMMddHHmmss") + "_" + f);
     }
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<long> GetFileHistoryCount([FromServices] ISearchDataModifiedUserFile search, long id)
     {
 
