@@ -41,7 +41,10 @@ export const App = () => {
   
     useEffect(() => {
       obtainUser()
-      .catch(err=>console.log('err',err))
+      .catch(err=>{
+        console.log('err on authentication for the current user',err);
+        setUserName('InvalidAuthentication');
+      })
       .then(it=> {
         setUserName(it?.name);
       });

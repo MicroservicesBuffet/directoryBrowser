@@ -48,7 +48,13 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
         },
         body: JSON.stringify({pathFile:folderParentDisplay + fileObject.name, content: textToSave})
       }
-      ).then(
+      )
+      .catch(err=>{
+        console.log('err',err);
+        window.alert('Error saving file');
+        throw err;
+      })
+      .then(
           (res) => res.text() 
       );
 
