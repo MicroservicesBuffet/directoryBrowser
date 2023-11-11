@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { FolderToRead } from './genericFiles/FolderToRead';
 import DisplayFoldersAndFiles from './justDisplayGUI/displayFoldersAndFiles';
 import FindFilesRecursive from './justDisplayGUI/findFilesRecursive';
-import {Button, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
+import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
   
 
   export default function DisplayFiles(){
