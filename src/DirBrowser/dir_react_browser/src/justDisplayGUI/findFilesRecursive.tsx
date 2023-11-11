@@ -1,13 +1,10 @@
-import { Input, TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Tfoot, Button, Box, } from "@chakra-ui/react";
+import { Input,  Button, Box } from "@chakra-ui/react";
 import { FolderToRead } from "../genericFiles/FolderToRead";
-import {Link } from 'react-router-dom';
 
 import {
   useQuery,
 } from '@tanstack/react-query';
 
-import EditFile from "./editFile";
-import HistoryFile from "./history";
 import { useState } from "react";
 import DisplayFoldersAndFiles from "./displayFoldersAndFiles";
 type PropsFindFilesRecursive = {
