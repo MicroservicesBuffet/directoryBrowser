@@ -8,4 +8,5 @@ export interface FolderToRead {
     name:              string;
     lastModified:      Date;
     isDirectory:       boolean;
+    relPathFolder:    string;
 }

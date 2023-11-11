@@ -1,11 +1,12 @@
 ﻿using Asp.Versioning;
 using Generated;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
 namespace DirBrowser7.Controllers;
-    
+[EnableCors("AllowAll")]
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -30,6 +31,7 @@ public class FileController : ControllerBase
         return await fo.GetFileText(path,folders);
     }
     [HttpPost]
+    [AllowAnonymous]
     public async Task<int> SetFileText([FromBody] SaveTextFile save, [FromServices] FolderToRead[] folders, [FromServices] ISaveFile[] plugins )
     {
         await Task.Delay(1000);
@@ -71,6 +73,7 @@ public class FileController : ControllerBase
         return fo.GetFolderContent(path, folders);
 
     }
+    
     [HttpGet("{id}")]
     [AllowAnonymous]
     public async Task<FileResult?> GetFileHistory(long id)
@@ -90,5 +93,21 @@ public class FileController : ControllerBase
 
         var s = SearchModifiedUserFile.FromSearch(GeneratorFromDB.SearchCriteria.Equal, eModifiedUserFileColumns.IDFile, id.ToString());
         return await search.GetAllCount(s);       
+    }
+
+    [HttpGet("{line}/{*path}")]
+    [AllowAnonymous]
+    public async Task<FolderToRead[]> Search([FromServices] IFileSearch search, [FromServices] FolderToRead[] rootFolders, string line, string path)
+    {
+        try
+        {
+            var data = await search.SearchFiles(path, line, rootFolders);
+            return data;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex);
+            throw;
+        }
     }
 }

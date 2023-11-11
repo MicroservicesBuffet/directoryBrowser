@@ -3,7 +3,7 @@ namespace DirBrowserBL;
 
 public interface IFileSearch
 {
-    Task<IFileInfo[]> SearchFiles(string startFolder,string contentLine); 
+    Task<FolderToRead[]> SearchFiles(string startFolder,string contentLine, FolderToRead[] rootFolders); 
 
 }
 

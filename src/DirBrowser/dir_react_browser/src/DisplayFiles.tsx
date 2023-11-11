@@ -5,7 +5,8 @@ import {
 import { useParams } from 'react-router-dom';
 import { FolderToRead } from './genericFiles/FolderToRead';
 import DisplayFoldersAndFiles from './justDisplayGUI/displayFoldersAndFiles';
-import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
+import FindFilesRecursive from './justDisplayGUI/findFilesRecursive';
+import {Button, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
   
 
   export default function DisplayFiles(){
@@ -92,6 +93,9 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/reac
 </Box>
     </>}
     
-      <DisplayFoldersAndFiles folderParent={root} allData={data!} ></DisplayFoldersAndFiles>
+      <DisplayFoldersAndFiles folderParent={root} allData={data!} differentFolderParent={false} ></DisplayFoldersAndFiles>
+      <FindFilesRecursive folderParent={root} ></FindFilesRecursive>
+      
+      
     </>
   }

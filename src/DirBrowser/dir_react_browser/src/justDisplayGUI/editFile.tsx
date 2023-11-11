@@ -11,13 +11,14 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
     const [dataLines, setData]=useState<string>('');
     const [textToSave, setTextToSave]= useState('');
     const [startSaving, setStartSaving]=useState(false);
+    
     const openAndLoad=()=>{
       setData('');
       setTextToSave('');
       setStartSaving(false);  
       onOpen();
         const fetchLines = (): Promise<string> =>
-            fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileText/'+ folderParentDisplay + fileObject.name
+            fetch(''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileText/'+ fileObject.relPathFolder
             ,
     {
       method: 'GET',
@@ -46,7 +47,7 @@ export default function EditFile({fileObject,folderParentDisplay }: PropsDisplay
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({pathFile:folderParentDisplay + fileObject.name, content: textToSave})
+        body: JSON.stringify({pathFile:fileObject.relPathFolder, content: textToSave})
       }
       )
       .catch(err=>{

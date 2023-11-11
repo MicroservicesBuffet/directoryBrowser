@@ -5,7 +5,8 @@ import EditFile from "./editFile";
 import HistoryFile from "./history";
 type PropsDisplayFoldersAndFiles = {
     allData: FolderToRead[],
-    folderParent:string
+    folderParent:string,
+    differentFolderParent:boolean
   };
 export default function DisplayFoldersAndFiles(
     { allData, folderParent }: PropsDisplayFoldersAndFiles
@@ -18,7 +19,9 @@ export default function DisplayFoldersAndFiles(
     const files=allData.filter(it=>!it.isDirectory);
     const dirs=allData.filter(it=>it.isDirectory);
     const folderParentDisplay='/show/'+ (folderParent?folderParent+'/':'');
-    const downloadFile =(path:string)=>{
+    const downloadFile =(it:FolderToRead)=>{
+      var path = it.relPathFolder.substring(folderParent.length+1);
+      
       var url =''+process.env.REACT_APP_URL+'api/v1.0/File/GetFileContent/';
       window.open(url+folderParent+'/'+path);
     }
@@ -67,7 +70,7 @@ export default function DisplayFoldersAndFiles(
             }
             {!it.isDirectory && 
             <>
-              <Button onClick={()=>downloadFile(it.name)} colorScheme='blue'>Download</Button>
+              <Button onClick={()=>downloadFile(it)} colorScheme='blue'>Download</Button>
               <hr />
               <HistoryFile fileObject={it} folderParentDisplay={folderParentDisplay.replace('/show/','')}></HistoryFile> 
               <hr />
